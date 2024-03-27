@@ -7,6 +7,7 @@ import { eq } from './matchers/EqualsMatcher'
 import { NullMethodStub } from './methodStubs/NullMethodStub'
 
 export class Mocker {
+    private internalMock: any = {}
     readonly mock: any
     readonly instance: any = {}
     private objectInspector = new ObjectInspector()
@@ -24,8 +25,9 @@ export class Mocker {
         const instance = new Proxy(this.instance, {
             get: (target: any, name: PropertyKey) => {
                 if (!(name in target)) {
-                    this.defineMockPropertyStub(name.toString())
-                    this.defineInstancePropertyExecutor(name.toString())
+                    // this.defineMockPropertyStub(name.toString())
+                    // this.defineInstancePropertyExecutor(name.toString())
+                    this.defineInstanceMethodExecutor(name.toString())
                 }
                 return target[name]
             },
@@ -35,12 +37,15 @@ export class Mocker {
     }
 
     private createMock(): any {
-        const mock: any = new Proxy({}, {
+        const mock: any = new Proxy(this.internalMock, {
             get: (target: any, name: PropertyKey) => {
                 const hasMethodStub = name in target
                 if (!hasMethodStub) {
-                    this.defineMockPropertyStub(name.toString())
+                    // this.defineMockPropertyStub(name.toString())
+                    this.defineMockMethodStub(name.toString())
+                    this.defineInstanceMethodExecutor(name.toString())
                 }
+
                 return target[name]
             },
         })
@@ -84,17 +89,17 @@ export class Mocker {
     // }
 
     private defineMockPropertyStub(propertyName: string): void {
-        if (Object.hasOwn(this.mock, propertyName)) return
+        if (Object.hasOwn(this.internalMock, propertyName)) return
 
-        Object.defineProperty(this.mock, propertyName, {
+        Object.defineProperty(this.internalMock, propertyName, {
             get: this.createMethodStub(propertyName),
         })
     }
 
     private defineMockMethodStub(methodName: string): void {
-        if (Object.hasOwn(this.mock, methodName)) return
+        if (Object.hasOwn(this.internalMock, methodName)) return
 
-        this.mock[methodName] = this.createMethodStub(methodName)
+        this.internalMock[methodName] = this.createMethodStub(methodName)
     }
 
     private createMethodStub(name: string): (...args: any[]) => any {

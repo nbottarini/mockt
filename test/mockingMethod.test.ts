@@ -103,6 +103,10 @@ describe('mocking class method', () => {
         })
     })
 
+    it.skip('calling non-existent method throws TypeError', () => {
+        expect(() => myClassMock['non-existent']()).toThrow(TypeError)
+    })
+
     beforeEach(() => {
         myClassMock = mockt(MyClass)
     })
@@ -133,7 +137,7 @@ describe('mocking abstract class', () => {
         })
     })
 
-    describe.skip('abstract method', () => {
+    describe('abstract method', () => {
         it('when not-stubbed returns undefined', () => {
             const actual = abstractClassMock.abstractMethod(1)
 
@@ -162,12 +166,31 @@ describe('mocking abstract class', () => {
     })
 })
 
-it('calling non-existent method throws TypeError', () => {
-    expect(() => myClassMock['non-existent']()).toThrow(TypeError)
+describe('mocking interface method', () => {
+    describe('without params', () => {
+        it('when not-stubbed returns undefined', () => {
+            const actual = interfaceMock.methodThatReturns1()
+
+            expect(actual).toBe(undefined)
+        })
+
+        it('when stubbed returns configured value', () => {
+            when(interfaceMock).methodThatReturns1().returns(2)
+
+            const actual = interfaceMock.methodThatReturns1()
+
+            expect(actual).toBe(2)
+        })
+    })
+
+    beforeEach(() => {
+        interfaceMock = mockt<MyInterface>()
+    })
 })
 
 let myClassMock: MyClass
 let abstractClassMock: ParentClass
+let interfaceMock: MyInterface
 
 abstract class ParentClass {
     inheritedMethod(param: number): number {
@@ -201,4 +224,14 @@ class MyClass extends ParentClass {
     abstractMethod(param: number): number {
         return param
     }
+}
+
+interface MyInterface {
+    methodThatReturns1(): number
+
+    methodThatReturnsParam(param: number): number
+
+    sum(a: number, b: number): number
+
+    methodWithOptionalParam(a: number, b?: number): number|undefined
 }
