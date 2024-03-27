@@ -1,19 +1,20 @@
 import { MethodStubBuilder } from './methodStubs/MethodStubBuilder'
 import { isObject } from './lib/isObject'
-import { ObjectInspector } from './ObjectInspector'
+import { ObjectInspector } from './lib/ObjectInspector'
 import { MethodStub } from './methodStubs/MethodStub'
 import { Matcher } from './matchers/Matcher'
 import { eq } from './matchers/EqualsMatcher'
 import { NullMethodStub } from './methodStubs/NullMethodStub'
 
-export class Mocker<T> {
+export class Mocker {
     readonly mock: any
     readonly instance: any = {}
     private objectInspector = new ObjectInspector()
     private excludedPropertyNames = ['hasOwnProperty']
+    // private mockableFunctionsFinder = new MockableFunctionsFinder()
     private methodStubs: Record<string, MethodStub<any>[]> = {}
 
-    constructor(private clazz?: (new (...args: any[]) => T)) {
+    constructor(private clazz?: any) {
         this.mock = this.createMock()
         this.addMockClassStubs()
         this.instance = this.createInstance()
@@ -50,6 +51,7 @@ export class Mocker<T> {
     private addMockClassStubs() {
         if (!isObject(this.clazz)) return
         this.addMockPropertiesStubs(this.clazz.prototype)
+        // this.addMockClassCodeStubs(this.clazz)
     }
 
     private addMockPropertiesStubs(clazzPrototype: any) {
@@ -72,6 +74,15 @@ export class Mocker<T> {
         })
     }
 
+    // private addMockClassCodeStubs(clazz: any) {
+    //     const classCode = typeof clazz.toString !== 'undefined' ? clazz.toString() : ''
+    //     const functionNames = this.mockableFunctionsFinder.find(classCode)
+    //     functionNames.forEach((functionName: string) => {
+    //         this.createMethodStub(functionName)
+    //         this.defineInstancePropertyExecutor(functionName)
+    //     })
+    // }
+
     private defineMockPropertyStub(propertyName: string): void {
         if (Object.hasOwn(this.mock, propertyName)) return
 
@@ -89,7 +100,6 @@ export class Mocker<T> {
     private createMethodStub(name: string): (...args: any[]) => any {
         return (...args: any[]) => {
             const matchers: Matcher[] = args.map(it => it instanceof Matcher ? it : eq(it))
-            console.log('createMethodStub', matchers)
             return new MethodStubBuilder(name, matchers, this.addMethodStub.bind(this))
         }
     }

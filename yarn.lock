@@ -4610,6 +4610,7 @@ __metadata:
     babel-jest: "npm:^29.7.0"
     eslint: "npm:^8.57.0"
     jest: "npm:^29.7.0"
+    jest-each: "npm:^29.7.0"
     jest-extended: "npm:^4.0.2"
     lodash.isequalwith: "npm:^4.4.0"
     rollup: "npm:^3.29.4"

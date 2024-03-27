@@ -1,4 +1,4 @@
-import { isObject } from './lib/isObject'
+import { isObject } from './isObject'
 
 export class ObjectInspector {
     public getPrototypes(prototype: any): any[] {
