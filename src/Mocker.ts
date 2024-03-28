@@ -20,50 +20,32 @@ export class Mocker {
     }
 
     private createInstance(): any {
-        const instance = new Proxy(this.instance, {
-            get: (target: any, name: PropertyKey) => {
-                if (!(name in target)) {
-                    if (this.clazz) {
-                        // catch properties without getter
-                        this.defineMockPropertyStub(name.toString())
-                    } else { // Interface methods
-                        this.defineMockMethodStub(name.toString())
-                    }
-                }
-                return target[name]
-            },
-        })
+        const instance = this.createCatchUndefinedPropertiesProxy(this.instance)
         instance.__mocktMocker = this
         return instance
     }
 
     private createMock(): any {
-        const mock: any = new Proxy(this.internalMock, {
-            get: (target: any, name: PropertyKey) => {
-                const hasMethodStub = name in target
-                if (!hasMethodStub) {
-                    if (this.clazz) {
-                        // catch properties without getter
-                        this.defineMockPropertyStub(name.toString())
-                    } else { // Interface methods
-                        this.defineMockMethodStub(name.toString())
-                    }
-                }
-
-                return target[name]
-            },
-        })
+        const mock = this.createCatchUndefinedPropertiesProxy(this.internalMock)
         mock.__mocktMocker = this
         return mock
     }
 
-    private addMockClassStubs() {
-        if (!isObject(this.clazz)) return
-        this.addMockMembersStubs(this.clazz.prototype)
+    private createCatchUndefinedPropertiesProxy(obj: any): any {
+        return new Proxy(obj, {
+            get: (target: any, name: PropertyKey) => {
+                const hasMethodStub = name in target
+                if (!hasMethodStub) {
+                    this.defineMockPropertyStub(name.toString())
+                }
+                return target[name]
+            },
+        })
     }
 
-    private addMockMembersStubs(clazzPrototype: any) {
-        this.objectInspector.getAllPropertyNames(clazzPrototype).forEach(({ obj, propertyName }) => {
+    private addMockClassStubs() {
+        if (!isObject(this.clazz)) return
+        this.objectInspector.getAllPropertyNames(this.clazz.prototype).forEach(({ obj, propertyName }) => {
             const descriptor = Object.getOwnPropertyDescriptor(obj, propertyName)
             if (descriptor.get) {
                 this.defineMockPropertyStub(propertyName)
@@ -131,8 +113,6 @@ export class Mocker {
 
     private createExecutor(propertyName: string): (...args: any[]) => any {
         return (...args: any[]) => {
-            // const action: MethodAction = new MethodAction(key, args)
-            // this.methodActions.push(action);
             const methodStub = this.findMethodStub(propertyName, args)
             return methodStub.execute(args)
         }
@@ -140,7 +120,6 @@ export class Mocker {
 
     private findMethodStub(name: string, args: any[]): MethodStub<any> {
         if (this.methodStubs[name]) {
-            // this.defineMockMethodStub(name)
             const stub = this.methodStubs[name].find(stub => stub.matches(args))
             if (stub) return stub
         }

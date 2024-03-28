@@ -25,11 +25,9 @@ export class MethodStubBuilder<R> extends Function {
         return this
     }
 
+    // When is a function property we build the stub when is called as a function
     __call(...args: any[]): MethodStubBuilder<any> {
         this.defineMockMethodStub(this.methodName, true)
         return this.mock[this.methodName](...args)
-        // // TODO: agregar al mock y/o a la interfaz. Caso de propiedades que en realidad son funciones
-        // const matchers: Matcher[] = args.map(it => it instanceof Matcher ? it : eq(it))
-        // return new MethodStubBuilder(this.methodName, matchers, this.addMethodStub)
     }
 }

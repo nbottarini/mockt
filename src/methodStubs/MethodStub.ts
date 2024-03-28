@@ -1,4 +1,4 @@
-import { Matcher } from '../matchers/Matcher'
+import { Matcher } from '@/matchers/Matcher'
 
 export abstract class MethodStub<R> {
     protected constructor(readonly name: string, readonly matchers: Matcher[]) {
