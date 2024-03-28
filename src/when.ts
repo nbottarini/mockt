@@ -1,4 +1,4 @@
-import { Mock } from './mock'
+import { Mock } from './Mock'
 import { Mocker } from './Mocker'
 
 export function when<T>(instance: T): Mock<T> {

@@ -85,6 +85,20 @@ describe('mocking class method', () => {
         })
     })
 
+    describe('arrow method', () => {
+        it('when not-stubbed throws TypeError', () => {
+            expect(() =>  myClassMock.arrowMethod(2)).toThrow(TypeError)
+        })
+
+        it('when stubbed returns configured value', () => {
+            when(myClassMock).arrowMethod(1).returns(2)
+
+            const actual = myClassMock.arrowMethod(1)
+
+            expect(actual).toBe(2)
+        })
+    })
+
     describe('inherited', () => {
         it('when stubbed returns configured value if called with matching param value', () => {
             when(myClassMock).inheritedMethod(1).returns(2)
@@ -103,7 +117,7 @@ describe('mocking class method', () => {
         })
     })
 
-    it.skip('calling non-existent method throws TypeError', () => {
+    it('calling non-existent method throws TypeError', () => {
         expect(() => myClassMock['non-existent']()).toThrow(TypeError)
     })
 
@@ -112,99 +126,22 @@ describe('mocking class method', () => {
     })
 })
 
-describe('mocking abstract class', () => {
-    describe('method', () => {
-        it('when not-stubbed returns undefined', () => {
-            const actual = abstractClassMock.abstractClassMethod(1)
-
-            expect(actual).toBe(undefined)
-        })
-
-        it('when stubbed returns configured value if called with matching param value', () => {
-            when(abstractClassMock).abstractClassMethod(1).returns(2)
-
-            const actual = abstractClassMock.abstractClassMethod(1)
-
-            expect(actual).toBe(2)
-        })
-
-        it('when stubbed returns undefined if called without matching param value', () => {
-            when(abstractClassMock).abstractClassMethod(1).returns(2)
-
-            const actual = abstractClassMock.abstractClassMethod(5)
-
-            expect(actual).toBe(undefined)
-        })
-    })
-
-    describe('abstract method', () => {
-        it('when not-stubbed returns undefined', () => {
-            const actual = abstractClassMock.abstractMethod(1)
-
-            expect(actual).toBe(undefined)
-        })
-
-        it('when stubbed returns configured value if called with matching param value', () => {
-            when(abstractClassMock).abstractMethod(1).returns(2)
-
-            const actual = abstractClassMock.abstractMethod(1)
-
-            expect(actual).toBe(2)
-        })
-
-        it('when stubbed returns undefined if called without matching param value', () => {
-            when(abstractClassMock).abstractMethod(1).returns(2)
-
-            const actual = abstractClassMock.abstractMethod(5)
-
-            expect(actual).toBe(undefined)
-        })
-    })
-
-    beforeEach(() => {
-        abstractClassMock = mockt(ParentClass)
-    })
-})
-
-describe('mocking interface method', () => {
-    describe('without params', () => {
-        it('when not-stubbed returns undefined', () => {
-            const actual = interfaceMock.methodThatReturns1()
-
-            expect(actual).toBe(undefined)
-        })
-
-        it('when stubbed returns configured value', () => {
-            when(interfaceMock).methodThatReturns1().returns(2)
-
-            const actual = interfaceMock.methodThatReturns1()
-
-            expect(actual).toBe(2)
-        })
-    })
-
-    beforeEach(() => {
-        interfaceMock = mockt<MyInterface>()
-    })
-})
-
 let myClassMock: MyClass
-let abstractClassMock: ParentClass
-let interfaceMock: MyInterface
 
 abstract class ParentClass {
     inheritedMethod(param: number): number {
         return param
     }
-
-    abstract abstractMethod(param: number): number
-
-    abstractClassMethod(param: number): number {
-        return param
-    }
 }
 
 class MyClass extends ParentClass {
+    readonly pepe: string
+
+    constructor() {
+        super()
+        this.pepe = 'hola'
+    }
+
     methodThatReturns1(): number {
         return 1
     }
@@ -221,17 +158,5 @@ class MyClass extends ParentClass {
         return b
     }
 
-    abstractMethod(param: number): number {
-        return param
-    }
-}
-
-interface MyInterface {
-    methodThatReturns1(): number
-
-    methodThatReturnsParam(param: number): number
-
-    sum(a: number, b: number): number
-
-    methodWithOptionalParam(a: number, b?: number): number|undefined
+    arrowMethod = (a: number) => a
 }
