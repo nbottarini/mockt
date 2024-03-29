@@ -12,6 +12,7 @@ export class EqualsMatcher<T> extends Matcher<T> {
             value,
             (a: any, b: any): boolean => {
                 if (a instanceof Matcher) return a.matches(b)
+                if (a == b) return true
                 return undefined
             })
     }

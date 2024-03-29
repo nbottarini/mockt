@@ -57,6 +57,40 @@ describe('arrays', () => {
     })
 })
 
+describe('equality with type conversion', () => {
+    it('matches when represent same value with different types', () => {
+        when(myClassMock).methodWithAnyParam(eq('1')).returns({ name: 'Alice' })
+
+        const actual = myClassMock.methodWithAnyParam(1)
+
+        expect(actual).toEqual({ name: 'Alice' })
+    })
+
+    it('matches when represent same value with different types in array', () => {
+        when(myClassMock).methodWithAnyParam(eq(['1'])).returns({ name: 'Alice' })
+
+        const actual = myClassMock.methodWithAnyParam([1])
+
+        expect(actual).toEqual({ name: 'Alice' })
+    })
+
+    it('matches when represent same value with different types in object', () => {
+        when(myClassMock).methodWithAnyParam(eq({ age: '17' })).returns({ name: 'Alice' })
+
+        const actual = myClassMock.methodWithAnyParam({ age: 17 })
+
+        expect(actual).toEqual({ name: 'Alice' })
+    })
+
+    it('matches when represent same value with different types in nested object', () => {
+        when(myClassMock).methodWithAnyParam(eq({ user: { age: '17' } })).returns({ name: 'Alice' })
+
+        const actual = myClassMock.methodWithAnyParam({ user: { age: 17 } })
+
+        expect(actual).toEqual({ name: 'Alice' })
+    })
+})
+
 describe('objects', () => {
     it('matches when equal', () => {
         when(myClassMock).methodWithAnyParam(eq({ name: 'Bob' })).returns({ name: 'Alice' })

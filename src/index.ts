@@ -1,2 +1,16 @@
+export * from './Mock'
 export * from './mockt'
+export * from './verify'
 export * from './when'
+
+export * from './matchers/AndMatcher'
+export * from './matchers/AnyMatcher'
+export * from './matchers/EqualsMatcher'
+export * from './matchers/IdenticalMatcher'
+export * from './matchers/LessMatcher'
+export * from './matchers/MoreMatcher'
+export * from './matchers/NotMatcher'
+export * from './matchers/OrMatcher'
+export * from './matchers/RangeMatcher'
+
+export * from './methodStubs/MethodStubBuilder'
