@@ -100,6 +100,7 @@ export class Mocker {
 
         Object.defineProperty(this.instance, propertyName, {
             get: this.createExecutor(propertyName),
+            set: () => {},
             configurable: true,
         })
     }

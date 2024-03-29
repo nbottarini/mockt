@@ -83,6 +83,23 @@ describe('mocking class method', () => {
 
             expect(actual).toBe(6)
         })
+
+        it('when stubbed without optional param matches any value for optional param', () => {
+            when(myClassMock).methodWithOptionalParam(2).returns(6)
+
+            const actual = myClassMock.methodWithOptionalParam(2, 9)
+
+            expect(actual).toBe(6)
+        })
+
+        it('stubs match by definition order', () => {
+            when(myClassMock).methodWithOptionalParam(2, 9).returns(99)
+            when(myClassMock).methodWithOptionalParam(2).returns(6)
+
+            const actual = myClassMock.methodWithOptionalParam(2, 9)
+
+            expect(actual).toBe(99)
+        })
     })
 
     describe('arrow method', () => {

@@ -5,8 +5,7 @@ export abstract class MethodStub<R> {
     }
 
     matches(args: any[]): boolean {
-        // TODO: Ver caso de longitud distinta por parametros default, etc
-        if (this.matchers.length !== args.length) return false
+        // Only match first matchers.length arguments
         return this.matchers.every((matcher, i) => matcher.matches(args[i]))
     }
 
