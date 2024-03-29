@@ -1,8 +1,8 @@
 import { Matcher } from './Matcher'
 import isEqualWith from 'lodash.isequalwith'
 
-export class EqualsMatcher extends Matcher {
-    constructor(private expected: any) {
+export class EqualsMatcher<T> extends Matcher {
+    constructor(private expected: T) {
         super()
     }
 
@@ -17,6 +17,6 @@ export class EqualsMatcher extends Matcher {
     }
 }
 
-export function eq(expected: any) {
-    return new EqualsMatcher(expected)
+export function eq<T>(expected: T): T {
+    return new EqualsMatcher<T>(expected) as T
 }

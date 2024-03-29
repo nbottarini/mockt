@@ -6,6 +6,6 @@ export class AnyMatcher extends Matcher {
     }
 }
 
-export function any() {
-    return new AnyMatcher()
+export function any<T>(): T {
+    return new AnyMatcher() as T
 }

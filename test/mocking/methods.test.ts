@@ -152,13 +152,6 @@ abstract class ParentClass {
 }
 
 class MyClass extends ParentClass {
-    readonly pepe: string
-
-    constructor() {
-        super()
-        this.pepe = 'hola'
-    }
-
     methodThatReturns1(): number {
         return 1
     }
