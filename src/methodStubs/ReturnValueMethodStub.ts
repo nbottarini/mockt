@@ -1,8 +1,8 @@
 import { MethodStub } from './MethodStub'
-import { Matcher } from '../matchers/Matcher'
+import { Matcher } from '@/matchers/Matcher'
 
 export class ReturnValueMethodStub<R> extends MethodStub<R> {
-    constructor(name: string, matchers: Matcher[], private value: R) {
+    constructor(name: string, matchers: Matcher<any>[], private value: R) {
         super(name, matchers)
     }
 

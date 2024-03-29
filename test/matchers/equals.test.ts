@@ -1,7 +1,7 @@
-import { eq } from '../../src/matchers/EqualsMatcher'
-import { any } from '../../src/matchers/AnyMatcher'
-import { mockt } from '../../src/mockt'
-import { when } from '../../src/when'
+import { eq } from '@/matchers/EqualsMatcher'
+import { any } from '@/matchers/AnyMatcher'
+import { mockt } from '@/mockt'
+import { when } from '@/when'
 
 describe('numbers', () => {
     it('matches when equal', () => {

@@ -6,7 +6,7 @@ export class MethodStubBuilder<R> extends Function {
     constructor(
         private mock: any,
         private methodName: string,
-        private matchers: Matcher[],
+        private matchers: Matcher<any>[],
         private addMethodStub: (stub: MethodStub<R>) => void,
         private defineMockMethodStub: (methodName: string, force?: boolean) => void,
     ) {

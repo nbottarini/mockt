@@ -1,3 +1,3 @@
-export abstract class Matcher {
-    abstract matches(value: any): boolean
+export abstract class Matcher<T> {
+    abstract matches(value: T): boolean
 }

@@ -1,12 +1,12 @@
 import { Matcher } from './Matcher'
 import isEqualWith from 'lodash.isequalwith'
 
-export class EqualsMatcher<T> extends Matcher {
+export class EqualsMatcher<T> extends Matcher<T> {
     constructor(private expected: T) {
         super()
     }
 
-    matches(value: any): boolean {
+    matches(value: T): boolean {
         return isEqualWith(
             this.expected,
             value,

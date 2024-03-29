@@ -76,7 +76,7 @@ export class Mocker {
 
     private createMethodStub(name: string): (...args: any[]) => any {
         return (...args: any[]) => {
-            const matchers: Matcher[] = args.map(it => it instanceof Matcher ? it : eq(it))
+            const matchers = args.map(it => it instanceof Matcher ? it : eq(it))
             return new MethodStubBuilder(
                 this.internalMock,
                 name,
