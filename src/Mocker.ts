@@ -121,8 +121,15 @@ export class Mocker {
 
     private findMethodStub(name: string, args: any[]): MethodStub<any> {
         if (this.methodStubs[name]) {
-            const stub = this.methodStubs[name].find(stub => stub.matches(args))
-            if (stub) return stub
+            const stubs = this.methodStubs[name].filter(stub => stub.isEnabled && stub.matches(args))
+            if (stubs.length === 1) {
+                return stubs[0]
+            } else if (stubs.length > 1) {
+                // Multiple Matches, disable result for next call
+                const stub = stubs[0]
+                stub.disable()
+                return stub
+            }
         }
 
         return new NullMethodStub(name)
