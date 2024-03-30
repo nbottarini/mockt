@@ -1,6 +1,5 @@
 import { when } from '@/when'
-import { mockt } from '../../src'
-import { less } from '../../src/matchers/LessMatcher'
+import { less, mockt } from '../../src'
 
 it('matches when value is less than given value', () => {
     when(myClassMock).method(less(10)).returns(5)

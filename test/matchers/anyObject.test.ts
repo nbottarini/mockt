@@ -1,6 +1,5 @@
 import { when } from '@/when'
-import { mockt } from '../../src'
-import { anyObject } from '../../src/matchers/AnyObjectMatcher'
+import { anyObject, mockt } from '../../src'
 
 it('matches when value is an object literal', () => {
     when(myClassMock).method(anyObject()).returns(5)

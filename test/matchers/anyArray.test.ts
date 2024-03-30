@@ -1,6 +1,5 @@
 import { when } from '@/when'
-import { mockt } from '../../src'
-import { anyArray } from '../../src/matchers/AnyArrayMatcher'
+import { anyArray, mockt } from '../../src'
 
 it('matches when value is an array literal', () => {
     when(myClassMock).method(anyArray()).returns(5)
@@ -15,6 +14,7 @@ it('matches when value is an array literal', () => {
 it('matches when value is an array instance', () => {
     when(myClassMock).method(anyArray()).returns(5)
 
+    // noinspection JSPrimitiveTypeWrapperUsage
     const actual = myClassMock.method(new Array())
 
     expect(actual).toEqual(5)

@@ -1,6 +1,5 @@
 import { when } from '@/when'
-import { mockt } from '../../src'
-import { ofClass } from '../../src/matchers/ClassMatcher'
+import { mockt, ofClass } from '../../src'
 
 it('matches when value is an instance of expected class', () => {
     when(myClassMock).method(ofClass(OtherClass)).returns(5)

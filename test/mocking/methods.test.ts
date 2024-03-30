@@ -165,7 +165,7 @@ class MyClass extends ParentClass {
     }
 
     methodWithOptionalParam(a: number, b?: number): number|undefined {
-        return b
+        return a + b
     }
 
     arrowMethod = (a: number) => a

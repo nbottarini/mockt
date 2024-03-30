@@ -1,7 +1,6 @@
 import { mockt } from '@/mockt'
-import { when } from '../src'
+import { reset, when } from '../src'
 import { resetCalls } from '@/resetCalls'
-import { reset } from '../src/reset'
 
 describe('resetCalls', () => {
     it('reset multiple returns', () => {

@@ -1,6 +1,5 @@
 import { when } from '@/when'
-import { mockt } from '../../src'
-import { anyString } from '../../src/matchers/AnyStringMatcher'
+import { anyString, mockt } from '../../src'
 
 it('matches when value is a string literal', () => {
     when(myClassMock).method(anyString()).returns(5)
@@ -13,6 +12,7 @@ it('matches when value is a string literal', () => {
 it('matches when value is a string object', () => {
     when(myClassMock).method(anyString()).returns(5)
 
+    // noinspection JSPrimitiveTypeWrapperUsage
     const actual = myClassMock.method(new String('some string'))
 
     expect(actual).toEqual(5)

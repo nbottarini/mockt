@@ -1,6 +1,5 @@
 import { when } from '@/when'
-import { mockt } from '../../src'
-import { more } from '../../src/matchers/MoreMatcher'
+import { mockt, more } from '../../src'
 
 it('matches when value is greater than given value', () => {
     when(myClassMock).method(more(10)).returns(5)

@@ -1,7 +1,6 @@
 import { eq } from '@/matchers/EqualsMatcher'
 import { when } from '@/when'
-import { mockt } from '../../src'
-import { not } from '../../src/matchers/NotMatcher'
+import { mockt, not } from '../../src'
 
 it('matches when inner matcher not matches', () => {
     when(myClassMock).methodWithNumberParam(not(eq(2))).returns(3)

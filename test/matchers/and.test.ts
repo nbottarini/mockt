@@ -1,7 +1,5 @@
 import { when } from '@/when'
-import { mockt } from '../../src'
-import { and } from '../../src/matchers/AndMatcher'
-import { neq } from '../../src/matchers/NotMatcher'
+import { and, mockt, neq } from '../../src'
 
 it('matches when all matcher matches', () => {
     when(myClassMock).methodWithNumberParam(and(neq(2), neq(4), neq(6))).returns(3)

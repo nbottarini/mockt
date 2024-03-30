@@ -1,6 +1,5 @@
 import { when } from '@/when'
-import { mockt } from '../../src'
-import { anyFunction } from '../../src/matchers/AnyFunctionMatcher'
+import { anyFunction, mockt } from '../../src'
 
 it('matches when value is a function literal', () => {
     when(myClassMock).method(anyFunction()).returns(5)

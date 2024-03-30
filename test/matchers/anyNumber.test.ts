@@ -1,6 +1,5 @@
 import { when } from '@/when'
-import { mockt } from '../../src'
-import { anyNumber } from '../../src/matchers/AnyNumberMatcher'
+import { anyNumber, mockt } from '../../src'
 
 it('matches when value is a numeric literal', () => {
     when(myClassMock).method(anyNumber()).returns(5)
@@ -15,6 +14,7 @@ it('matches when value is a numeric literal', () => {
 it('matches when value is a number object', () => {
     when(myClassMock).method(anyNumber()).returns(5)
 
+    // noinspection JSPrimitiveTypeWrapperUsage
     const actual = myClassMock.method(new Number(3))
 
     expect(actual).toEqual(5)

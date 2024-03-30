@@ -1,6 +1,5 @@
 import { when } from '@/when'
-import { mockt } from '../../src'
-import { notNull } from '../../src/matchers/NotNullMatcher'
+import { mockt, notNull } from '../../src'
 
 it('matches when value is not null', () => {
     when(myClassMock).method(notNull()).returns(5)
