@@ -134,4 +134,14 @@ export class Mocker {
 
         return new NullMethodStub(name)
     }
+
+    resetCalls() {
+        for (let methodName of Object.keys(this.methodStubs)) {
+            this.methodStubs[methodName].forEach(stub => stub.enable())
+        }
+    }
+
+    reset() {
+        this.methodStubs = {}
+    }
 }

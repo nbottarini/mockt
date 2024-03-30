@@ -1,5 +1,7 @@
 export * from './Mock'
 export * from './mockt'
+export * from './reset'
+export * from './resetCalls'
 export * from './verify'
 export * from './when'
 
