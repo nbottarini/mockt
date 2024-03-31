@@ -1,5 +1,5 @@
 import { mockt } from '@/mockt'
-import { reset, when } from '../src'
+import { reset, verifyOnce, when } from '../src'
 import { resetCalls } from '@/resetCalls'
 
 describe('resetCalls', () => {
@@ -11,6 +11,15 @@ describe('resetCalls', () => {
         const actual = myClassMock.method()
 
         expect(actual).toEqual(5)
+    })
+
+    it('reset calls', () => {
+        myClassMock.method()
+
+        resetCalls(myClassMock)
+        myClassMock.method()
+
+        verifyOnce(myClassMock).method()
     })
 })
 
@@ -32,6 +41,15 @@ describe('reset', () => {
         const actual = myClassMock.method()
 
         expect(actual).toEqual(6)
+    })
+
+    it('reset calls', () => {
+        myClassMock.method()
+
+        reset(myClassMock)
+        myClassMock.method()
+
+        verifyOnce(myClassMock).method()
     })
 })
 
