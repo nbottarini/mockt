@@ -16,6 +16,11 @@ export class EqualsMatcher<T> extends Matcher<T> {
                 return undefined
             })
     }
+
+    toString() {
+        // TODO: Improve expected to string by type
+        return `eq(${this.expected.toString()})`
+    }
 }
 
 export function eq<T>(expected: T): T {

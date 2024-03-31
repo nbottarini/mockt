@@ -4,6 +4,10 @@ export class IsNullMatcher<T> extends Matcher<T> {
     matches(value: T): boolean {
         return value === null
     }
+
+    toString() {
+        return `isNull()`
+    }
 }
 
 export function isNull<T>(): T {

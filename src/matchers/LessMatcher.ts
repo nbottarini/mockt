@@ -8,6 +8,10 @@ export class LessMatcher extends Matcher<number> {
     matches(value: number): boolean {
         return value <= this.max
     }
+
+    toString() {
+        return `less(${this.max})`
+    }
 }
 
 export function less(max: number): number {

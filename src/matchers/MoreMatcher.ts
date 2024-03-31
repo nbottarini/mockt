@@ -8,6 +8,10 @@ export class MoreMatcher extends Matcher<number> {
     matches(value: number): boolean {
         return value >= this.min
     }
+
+    toString() {
+        return `more(${this.min})`
+    }
 }
 
 export function more(min: number): number {

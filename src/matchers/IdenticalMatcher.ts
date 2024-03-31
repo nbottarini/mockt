@@ -8,6 +8,11 @@ export class IdenticalMatcher<T> extends Matcher<T> {
     matches(value: T): boolean {
         return value === this.expected
     }
+
+    toString() {
+        // TODO: Improve expected to string by type
+        return `is(${this.expected.toString()})`
+    }
 }
 
 export function is<T>(expected: T): T {

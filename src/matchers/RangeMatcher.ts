@@ -8,6 +8,10 @@ export class RangeMatcher extends Matcher<number> {
     matches(value: number): boolean {
         return value <= this.to && value >= this.from
     }
+
+    toString() {
+        return `range(${this.from}, ${this.to})`
+    }
 }
 
 export function range(from: number, to: number): number {

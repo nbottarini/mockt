@@ -1,10 +1,27 @@
 import { mockt } from '@/mockt'
+import { eq, verify } from '../src'
 
-describe.skip('verify', () => {
-    it('method without params', () => {
+describe('verify', () => {
+    it('method without params success if called', () => {
         myClassMock.methodThatReturns1()
 
-        // verify(myClassMock).methodThatReturns1())
+        verify(myClassMock).methodThatReturns1()
+    })
+
+    it('method with params success if called with matching param', () => {
+        myClassMock.methodThatReturnsParam(3)
+
+        verify(myClassMock).methodThatReturnsParam(eq(3))
+    })
+
+    it('method with params success if called with non-matching param', () => {
+        myClassMock.methodThatReturnsParam(3)
+
+        expect(() => verify(myClassMock).methodThatReturnsParam(eq(2))).toThrow(
+            `Expected "methodThatReturnsParam(eq(2))" to be called.\n\n` +
+            `Actual calls:\n` +
+            `- methodThatReturnsParam(3)\n`
+        )
     })
 
     beforeEach(() => {

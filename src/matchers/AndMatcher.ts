@@ -12,6 +12,10 @@ export class AndMatcher<T> extends Matcher<T> {
     matches(value: T): boolean {
         return this.matchers.every(m => m.matches(value))
     }
+
+    toString() {
+        return `and(${this.matchers.map(m => m.toString()).join(', ')})`
+    }
 }
 
 export function and<T>(...matchers: (Matcher<T>|T)[]): T {

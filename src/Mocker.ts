@@ -5,6 +5,7 @@ import { MethodStub } from './methodStubs/MethodStub'
 import { Matcher } from './matchers/Matcher'
 import { eq } from './matchers/EqualsMatcher'
 import { NullMethodStub } from './methodStubs/NullMethodStub'
+import { MethodCall } from '@/callVerification/MethodCall'
 
 export class Mocker {
     private internalMock: any = {}
@@ -12,6 +13,7 @@ export class Mocker {
     readonly instance: any = {}
     private objectInspector = new ObjectInspector()
     private methodStubs: Record<string, MethodStub<any>[]> = {}
+    private methodCalls: MethodCall[] = []
 
     constructor(private clazz?: any) {
         this.mock = this.createMock()
@@ -114,6 +116,7 @@ export class Mocker {
 
     private createExecutor(propertyName: string): (...args: any[]) => any {
         return (...args: any[]) => {
+            this.methodCalls.push(new MethodCall(propertyName, args))
             const methodStub = this.findMethodStub(propertyName, args)
             return methodStub.execute(args)
         }
@@ -133,6 +136,14 @@ export class Mocker {
         }
 
         return new NullMethodStub(name)
+    }
+
+    getMatchingCalls(methodName: string, matchers: Matcher<any>[]): MethodCall[] {
+        return this.methodCalls.filter(call => call.name === methodName && call.matches(matchers))
+    }
+
+    getMethodCalls(methodName: string): MethodCall[] {
+        return this.methodCalls.filter(call => call.name)
     }
 
     resetCalls() {

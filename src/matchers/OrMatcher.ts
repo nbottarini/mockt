@@ -12,6 +12,10 @@ export class OrMatcher<T> extends Matcher<T> {
     matches(value: T): boolean {
         return !!this.matchers.find(m => m.matches(value))
     }
+
+    toString() {
+        return `or(${this.matchers.map(m => m.toString()).join(', ')})`
+    }
 }
 
 export function or<T>(...matchers: (Matcher<T>|T)[]): T {

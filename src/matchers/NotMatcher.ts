@@ -9,6 +9,10 @@ export class NotMatcher<T> extends Matcher<T> {
     matches(value: T): boolean {
         return !this.inner.matches(value)
     }
+
+    toString() {
+        return `not(${this.inner.toString()})`
+    }
 }
 
 export function not<T>(matcher: Matcher<T>|T): T {

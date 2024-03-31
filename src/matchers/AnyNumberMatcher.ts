@@ -7,6 +7,10 @@ export class AnyNumber extends Matcher<any> {
             type === 'object' && value != null && !Array.isArray(value) && Object.prototype.toString.call(value) === '[object Number]'
         )
     }
+
+    toString() {
+        return `anyNumber()`
+    }
 }
 
 export function anyNumber(): any {
