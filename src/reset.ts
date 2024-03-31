@@ -1,6 +1,8 @@
 import { Mocker } from './Mocker'
 
-export function reset<T>(instance: T) {
-    const mocker = (instance as any).__mocktMocker as Mocker
-    mocker.reset()
+export function reset(...instances: any) {
+    instances.forEach(instance => {
+        const mocker = (instance as any).__mocktMocker as Mocker
+        mocker.reset()
+    })
 }
