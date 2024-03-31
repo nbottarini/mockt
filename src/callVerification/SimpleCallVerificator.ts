@@ -14,9 +14,15 @@ export class SimpleCallVerificator {
 
     private methodVerifier(name: string): any {
         return (...args: any[]) => {
-            const matchers = args.map(it => it instanceof Matcher ? it : eq(it))
-            const calls = this.mocker.getMatchingCalls(name, matchers)
-            this.verifier.verify(this.mocker, name, matchers, calls)
+            let argsToVerify = args
+            let nameToVerify = name
+            if (name === 'getProperty') {
+                argsToVerify = argsToVerify.slice(1)
+                nameToVerify = args[0]
+            }
+            const matchers = argsToVerify.map(it => it instanceof Matcher ? it : eq(it))
+            const calls = this.mocker.getMatchingCalls(nameToVerify, matchers)
+            this.verifier.verify(this.mocker, nameToVerify, matchers, calls)
         }
     }
 }

@@ -1,4 +1,4 @@
-import { eq, mockt, verify } from '../../src'
+import { any, eq, mockt, verify } from '../../src'
 
 it('method without params success if called', () => {
     myClassMock.methodThatReturns1()
@@ -28,6 +28,31 @@ it('method with params success if called with non-matching param', () => {
     )
 })
 
+it('property get success if read', () => {
+    // @ts-ignore
+    const value = myClassMock.someProperty
+
+    verify(myClassMock).getProperty('someProperty')
+})
+
+it('property get fails if not read', () => {
+    expect(() => verify(myClassMock).getProperty('someProperty')).toThrow(
+        `Expected "someProperty()" to be called but has never been called.`
+    )
+})
+
+it('property set success if assigned', () => {
+    myClassMock.someProperty = 'some value'
+
+    verify(myClassMock).setProperty('someProperty', 'some value')
+})
+
+it('property set fails if not assigned', () => {
+    expect(() => verify(myClassMock).setProperty('someProperty', any())).toThrow(
+        `Expected "setProperty(eq(someProperty), any())" to be called but has never been called.`
+    )
+})
+
 beforeEach(() => {
     myClassMock = mockt(MyClass)
 })
@@ -35,6 +60,8 @@ beforeEach(() => {
 let myClassMock: MyClass
 
 class MyClass {
+    someProperty: string = 'Hola'
+
     methodThatReturns1(): number {
         return 1
     }

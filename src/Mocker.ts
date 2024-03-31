@@ -14,6 +14,7 @@ export class Mocker {
     private objectInspector = new ObjectInspector()
     private methodStubs: Record<string, MethodStub<any>[]> = {}
     private methodCalls: MethodCall[] = []
+    private mocktProperty = '__mocktMocker'
 
     constructor(private clazz?: any) {
         this.mock = this.createMock()
@@ -23,13 +24,13 @@ export class Mocker {
 
     private createInstance(): any {
         const instance = this.createCatchUndefinedPropertiesProxy(this.instance)
-        instance.__mocktMocker = this
+        instance[this.mocktProperty] = this
         return instance
     }
 
     private createMock(): any {
         const mock = this.createCatchUndefinedPropertiesProxy(this.internalMock)
-        mock.__mocktMocker = this
+        mock[this.mocktProperty] = this
         return mock
     }
 
@@ -42,6 +43,11 @@ export class Mocker {
                 }
                 return target[name]
             },
+            set: (target: any, name: PropertyKey, newValue: any) => {
+                if (name !== this.mocktProperty) this.methodCalls.push(new MethodCall('setProperty', [name, newValue]))
+                target[name] = newValue
+                return true
+            }
         })
     }
 
@@ -59,7 +65,7 @@ export class Mocker {
 
     private defineMockPropertyStub(propertyName: string, force: boolean = false): void {
         if (force) delete this.internalMock[propertyName]
-        if (Object.hasOwn(this.internalMock, propertyName)) return
+        if (Object.hasOwn(this.internalMock, propertyName) || propertyName === this.mocktProperty) return
 
         Object.defineProperty(this.internalMock, propertyName, {
             get: this.createMethodStub(propertyName),
@@ -98,11 +104,13 @@ export class Mocker {
 
     private defineInstancePropertyExecutor(propertyName: string, force: boolean = false) {
         if (force) delete this.instance[propertyName]
-        if (Object.hasOwn(this.instance, propertyName)) return
+        if (Object.hasOwn(this.instance, propertyName) || propertyName === this.mocktProperty) return
 
         Object.defineProperty(this.instance, propertyName, {
             get: this.createExecutor(propertyName),
-            set: () => {},
+            set: (value: any) => {
+                this.methodCalls.push(new MethodCall('setProperty', [propertyName, value]))
+            },
             configurable: true,
         })
     }
@@ -143,7 +151,7 @@ export class Mocker {
     }
 
     getMethodCalls(methodName: string): MethodCall[] {
-        return this.methodCalls.filter(call => call.name)
+        return this.methodCalls.filter(call => call.name === methodName)
     }
 
     resetCalls() {
