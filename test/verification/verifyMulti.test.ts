@@ -1,7 +1,7 @@
 import { mockt } from '../../src'
 import { verifyMulti } from '../../src/verifyMulti'
 
-it.skip('method without params success if called', () => {
+it('success if all methods called', () => {
     myClassMock.methodThatReturns1()
     myClassMock.methodThatReturnsParam(3)
 
@@ -9,6 +9,17 @@ it.skip('method without params success if called', () => {
         .methodThatReturns1()
         .methodThatReturnsParam(3)
         .called()
+})
+
+it('fails if some method is not called', () => {
+    myClassMock.methodThatReturnsParam(3)
+
+    expect(() => {
+        verifyMulti(myClassMock)
+            .methodThatReturns1()
+            .methodThatReturnsParam(3)
+            .called()
+    }).toThrow(Error)
 })
 
 beforeEach(() => {

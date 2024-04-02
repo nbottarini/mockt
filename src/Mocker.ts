@@ -154,6 +154,10 @@ export class Mocker {
         return this.methodCalls.filter(call => call.name === methodName)
     }
 
+    getAllCalls(): MethodCall[] {
+        return this.methodCalls
+    }
+
     resetCalls() {
         for (let methodName of Object.keys(this.methodStubs)) {
             this.methodStubs[methodName].forEach(stub => stub.enable())
