@@ -1,10 +1,9 @@
 import { Mocker } from '@/Mocker'
-import { AtLeastOnceVerifier } from '@/callVerification/verifiers/AtLeastOnceVerifier'
 import { MultipleCallVerificator } from '@/callVerification/MultipleCallVerificator'
 
 export function verifyMulti<T>(instance: T): MockMultiVerificator<T> {
     const mocker = (instance as any).__mocktMocker as Mocker
-    return new MultipleCallVerificator(mocker, new AtLeastOnceVerifier()) as any as MockMultiVerificator<T>
+    return new MultipleCallVerificator(mocker) as any as MockMultiVerificator<T>
 }
 
 export type MockMultiVerificator<T> = {

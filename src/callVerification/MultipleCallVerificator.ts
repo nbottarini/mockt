@@ -1,13 +1,12 @@
 import { Mocker } from '@/Mocker'
 import { Matcher } from '@/matchers/Matcher'
 import { eq } from '@/matchers/EqualsMatcher'
-import { Verifier } from '@/callVerification/verifiers/Verifier'
 
 export class MultipleCallVerificator {
     private callsToVerify: CallToVerify[] = []
     private proxy: MultipleCallVerificator
 
-    constructor(private mocker: Mocker, private verifier: Verifier) {
+    constructor(private mocker: Mocker) {
         this.proxy = new Proxy(this, {
             get: (target: MultipleCallVerificator, name: PropertyKey) => {
                 if (name in target) return target[name]
