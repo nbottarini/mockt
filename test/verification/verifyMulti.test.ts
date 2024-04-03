@@ -1,25 +1,49 @@
-import { mockt } from '../../src'
+import { any, mockt } from '../../src'
 import { verifyMulti } from '../../src/verifyMulti'
 
-it('success if all methods called', () => {
-    myClassMock.methodThatReturns1()
-    myClassMock.methodThatReturnsParam(3)
+describe('verifyMulti called', () => {
+    it('success if all methods called', () => {
+        myClassMock.methodThatReturns1()
+        myClassMock.methodThatReturnsParam(3)
 
-    verifyMulti(myClassMock)
-        .methodThatReturns1()
-        .methodThatReturnsParam(3)
-        .called()
-})
-
-it('fails if some method is not called', () => {
-    myClassMock.methodThatReturnsParam(3)
-
-    expect(() => {
         verifyMulti(myClassMock)
             .methodThatReturns1()
             .methodThatReturnsParam(3)
             .called()
-    }).toThrow(Error)
+    })
+
+    it('fails if some method is not called', () => {
+        myClassMock.methodThatReturnsParam(3)
+
+        expect(() => {
+            verifyMulti(myClassMock)
+                .methodThatReturns1()
+                .methodThatReturnsParam(3)
+                .called()
+        }).toThrow(Error)
+    })
+
+    it('success if more methods are called', () => {
+        myClassMock.methodThatReturns1()
+        myClassMock.methodThatReturnsParam(3)
+        myClassMock.methodThatReturnsParam(3)
+        myClassMock.methodThatReturns1()
+
+        verifyMulti(myClassMock)
+            .methodThatReturns1()
+            .methodThatReturnsParam(any())
+            .called()
+    })
+
+    it('success if called in different order', () => {
+        myClassMock.methodThatReturnsParam(3)
+        myClassMock.methodThatReturns1()
+
+        verifyMulti(myClassMock)
+            .methodThatReturns1()
+            .methodThatReturnsParam(any())
+            .called()
+    })
 })
 
 beforeEach(() => {
