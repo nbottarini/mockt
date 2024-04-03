@@ -1,4 +1,4 @@
-import { any, eq, mockt, verify } from '../../src'
+import { any, eq, mockt, neq, verify } from '../../src'
 
 it('method without params success if called', () => {
     myClassMock.methodThatReturns1()
@@ -15,7 +15,7 @@ it('method without params fails if not called', () => {
 it('method with params success if called with matching param', () => {
     myClassMock.methodThatReturnsParam(3)
 
-    verify(myClassMock).methodThatReturnsParam(eq(3))
+    verify(myClassMock).methodThatReturnsParam(neq(2))
 })
 
 it('method with params success if called with non-matching param', () => {
@@ -69,14 +69,4 @@ class MyClass {
     methodThatReturnsParam(param: number): number {
         return param
     }
-
-    sum(a: number, b: number): number {
-        return a + b
-    }
-
-    methodWithOptionalParam(a: number, b?: number): number|undefined {
-        return b
-    }
-
-    arrowMethod = (a: number) => a
 }

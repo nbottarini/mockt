@@ -1,7 +1,7 @@
 import { mockt } from '@/mockt'
 import { when } from '@/when'
 
-describe('mocking class property', () => {
+describe('mocking property', () => {
     describe('without getter', () => {
         it('when not-stubbed returns undefined', () => {
             const actual = myClassMock.simpleProperty

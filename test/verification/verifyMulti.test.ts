@@ -1,5 +1,4 @@
-import { any, mockt } from '../../src'
-import { verifyMulti } from '../../src/verifyMulti'
+import { any, mockt, verifyMulti } from '../../src'
 
 describe('verifyMulti called', () => {
     it('success if all methods called', () => {
