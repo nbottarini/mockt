@@ -52,9 +52,11 @@ export class MultipleCallVerificator {
     }
 
     calledInOrder() {
+        throw new Error('Not implemented')
     }
 
     calledInSequence() {
+        throw new Error('Not implemented')
     }
 
     protected getAllCallsMessage(): string {
