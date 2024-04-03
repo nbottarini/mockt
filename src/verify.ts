@@ -58,4 +58,5 @@ export type MultipleCallVerificatorType<T> = {
     called(): void
     calledInOrder(): void
     calledInSequence(): void
+    never(): void
 }

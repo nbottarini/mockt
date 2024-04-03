@@ -1,7 +1,7 @@
 import { any, mockt, verifyMulti } from '../../src'
 
 describe('verifyMulti called', () => {
-    it('success if all methods called', () => {
+    it('success if all methods are called', () => {
         myClassMock.methodThatReturns1()
         myClassMock.methodThatReturnsParam(3)
 
@@ -11,7 +11,7 @@ describe('verifyMulti called', () => {
             .called()
     })
 
-    it('fails if some method is not called', () => {
+    it('fails if any method is not called', () => {
         myClassMock.methodThatReturnsParam(3)
 
         expect(() => {
@@ -19,7 +19,15 @@ describe('verifyMulti called', () => {
                 .methodThatReturns1()
                 .methodThatReturnsParam(3)
                 .called()
-        }).toThrow(Error)
+        }).toThrow(
+            `Expected calls:\n` +
+            `- methodThatReturns1()\n` +
+            `- methodThatReturnsParam(eq(3))\n` +
+            `\nMissing calls:\n` +
+            `- methodThatReturns1()\n` +
+            `\nAll calls:\n` +
+            `- methodThatReturnsParam(3)\n`
+        )
     })
 
     it('success if more methods are called', () => {
@@ -45,6 +53,35 @@ describe('verifyMulti called', () => {
     })
 })
 
+describe('verifyMulti never', () => {
+    it('success if all methods are never called', () => {
+        verifyMulti(myClassMock)
+            .methodThatReturns1()
+            .methodThatReturnsParam(3)
+            .never()
+    })
+
+    it('fails if any method is called', () => {
+        myClassMock.methodThatReturnsParam(3)
+
+        expect(() => {
+            verifyMulti(myClassMock)
+                .methodThatReturns1()
+                .methodThatReturnsParam(3)
+                .never()
+        }).toThrow(
+            `Expected to never be called:\n` +
+            `- methodThatReturns1()\n` +
+            `- methodThatReturnsParam(eq(3))\n` +
+            `\nUnexpected calls:\n` +
+            `- methodThatReturnsParam(3)\n` +
+            `\nAll calls:\n` +
+            `- methodThatReturnsParam(3)\n`
+
+        )
+    })
+})
+
 beforeEach(() => {
     myClassMock = mockt(MyClass)
 })
@@ -59,14 +96,4 @@ class MyClass {
     methodThatReturnsParam(param: number): number {
         return param
     }
-
-    sum(a: number, b: number): number {
-        return a + b
-    }
-
-    methodWithOptionalParam(a: number, b?: number): number|undefined {
-        return b
-    }
-
-    arrowMethod = (a: number) => a
 }
