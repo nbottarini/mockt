@@ -11,6 +11,17 @@ describe('verifyMulti called', () => {
             .called()
     })
 
+    it('success with getProperty and setProperty expectations', () => {
+        // @ts-ignore
+        const oldValue = myClassMock.someProperty
+        myClassMock.someProperty = 'new value'
+
+        verifyMulti(myClassMock)
+            .getProperty('someProperty')
+            .setProperty('someProperty', 'new value')
+            .called()
+    })
+
     it('fails if any method is not called', () => {
         myClassMock.methodThatReturnsParam(3)
 
@@ -89,6 +100,8 @@ beforeEach(() => {
 let myClassMock: MyClass
 
 class MyClass {
+    someProperty: string = 'Hola'
+
     methodThatReturns1(): number {
         return 1
     }
