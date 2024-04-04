@@ -1,6 +1,8 @@
+export * from './capture'
 export * from './mockt'
 export * from './reset'
 export * from './resetCalls'
+export * from './spy'
 export * from './verify'
 export * from './when'
 
@@ -26,3 +28,4 @@ export * from './matchers/OrMatcher'
 export * from './matchers/RangeMatcher'
 
 export * from './methodStubs/MethodStubBuilder'
+export { getCallTracker } from '@/lib/getCallTracker'

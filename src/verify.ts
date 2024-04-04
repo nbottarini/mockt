@@ -1,4 +1,3 @@
-import { Mocker } from '@/Mocker'
 import { SimpleCallVerificator } from '@/callVerification/simple/SimpleCallVerificator'
 import { AtLeastOnceVerifier } from '@/callVerification/simple/verifiers/AtLeastOnceVerifier'
 import { OnceVerifier } from '@/callVerification/simple/verifiers/OnceVerifier'
@@ -7,13 +6,7 @@ import { TimesVerifier } from '@/callVerification/simple/verifiers/TimesVerifier
 import { AtLeastVerifier } from '@/callVerification/simple/verifiers/AtLeastVerifier'
 import { AtMostVerifier } from '@/callVerification/simple/verifiers/AtMostVerifier'
 import { MultipleCallVerificator } from '@/callVerification/MultipleCallVerificator'
-import { Spy } from '@/spy/Spy'
-
-function getCallTracker(instance: any) {
-    if (instance.__mocktMocker) return (instance.__mocktMocker as Mocker).callTracker
-    if (instance.__mocktSpy) return (instance.__mocktSpy as Spy<any>).callTracker
-    throw new Error('Error')
-}
+import { getCallTracker } from '@/lib/getCallTracker'
 
 export function verify<T>(instance: T): SimpleCallVerificatorType<T> {
     return new SimpleCallVerificator(getCallTracker(instance), new AtLeastOnceVerifier()) as any as SimpleCallVerificatorType<T>
