@@ -100,7 +100,7 @@ beforeEach(() => {
 let myClassMock: MyClass
 
 class MyClass {
-    someProperty: string = 'Hola'
+    someProperty: string = 'Hello'
 
     methodThatReturns1(): number {
         return 1

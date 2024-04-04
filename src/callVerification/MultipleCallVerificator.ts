@@ -1,13 +1,13 @@
-import { Mocker } from '@/Mocker'
 import { Matcher } from '@/matchers/Matcher'
 import { eq } from '@/matchers/EqualsMatcher'
 import { MethodCall } from '@/callVerification/MethodCall'
+import { CallTracker } from '@/lib/CallTracker'
 
 export class MultipleCallVerificator {
     private callsToVerify: CallToVerify[] = []
-    private proxy: MultipleCallVerificator
+    private readonly proxy: MultipleCallVerificator
 
-    constructor(private mocker: Mocker) {
+    constructor(private callTracker: CallTracker) {
         this.proxy = new Proxy(this, {
             get: (target: MultipleCallVerificator, name: PropertyKey) => {
                 if (name in target) return target[name]
@@ -20,7 +20,7 @@ export class MultipleCallVerificator {
     called() {
         const failedCalls: CallToVerify[] = []
         for (let callToVerify of this.callsToVerify) {
-            const calls = this.mocker.getMatchingCalls(callToVerify.name, callToVerify.matchers)
+            const calls = this.callTracker.getMatchingCalls(callToVerify.name, callToVerify.matchers)
             if (calls.length === 0) {
                 failedCalls.push(callToVerify)
             }
@@ -37,7 +37,7 @@ export class MultipleCallVerificator {
     never() {
         const failedCalls: MethodCall[] = []
         for (let callToVerify of this.callsToVerify) {
-            const calls = this.mocker.getMatchingCalls(callToVerify.name, callToVerify.matchers)
+            const calls = this.callTracker.getMatchingCalls(callToVerify.name, callToVerify.matchers)
             if (calls.length > 0) {
                 failedCalls.push(...calls)
             }
@@ -60,7 +60,7 @@ export class MultipleCallVerificator {
     }
 
     protected getAllCallsMessage(): string {
-        const methodCalls = this.mocker.getAllCalls()
+        const methodCalls = this.callTracker.getAllCalls()
         if (methodCalls.length === 0) return ''
         return `\nAll calls:\n` +
             methodCalls.map(m => `- ${m.toString()}\n`).join('')

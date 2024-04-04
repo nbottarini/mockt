@@ -1,10 +1,10 @@
-import { Mocker } from '@/Mocker'
 import { Matcher } from '@/matchers/Matcher'
 import { eq } from '@/matchers/EqualsMatcher'
 import { SimpleCallVerifier } from '@/callVerification/simple/verifiers/SimpleCallVerifier'
+import { CallTracker } from '@/lib/CallTracker'
 
 export class SimpleCallVerificator {
-    constructor(private mocker: Mocker, private verifier: SimpleCallVerifier) {
+    constructor(private callTracker: CallTracker, private verifier: SimpleCallVerifier) {
         return new Proxy(this, {
             get: (target: SimpleCallVerificator, name: PropertyKey) => {
                 return this.methodVerifier(name.toString())
@@ -21,8 +21,8 @@ export class SimpleCallVerificator {
                 nameToVerify = args[0]
             }
             const matchers = argsToVerify.map(it => it instanceof Matcher ? it : eq(it))
-            const calls = this.mocker.getMatchingCalls(nameToVerify, matchers)
-            this.verifier.verify(this.mocker, nameToVerify, matchers, calls)
+            const calls = this.callTracker.getMatchingCalls(nameToVerify, matchers)
+            this.verifier.verify(this.callTracker, nameToVerify, matchers, calls)
         }
     }
 }

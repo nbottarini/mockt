@@ -7,40 +7,40 @@ import { TimesVerifier } from '@/callVerification/simple/verifiers/TimesVerifier
 import { AtLeastVerifier } from '@/callVerification/simple/verifiers/AtLeastVerifier'
 import { AtMostVerifier } from '@/callVerification/simple/verifiers/AtMostVerifier'
 import { MultipleCallVerificator } from '@/callVerification/MultipleCallVerificator'
+import { Spy } from '@/spy/Spy'
+
+function getCallTracker(instance: any) {
+    if (instance.__mocktMocker) return (instance.__mocktMocker as Mocker).callTracker
+    if (instance.__mocktSpy) return (instance.__mocktSpy as Spy<any>).callTracker
+    throw new Error('Error')
+}
 
 export function verify<T>(instance: T): SimpleCallVerificatorType<T> {
-    const mocker = (instance as any).__mocktMocker as Mocker
-    return new SimpleCallVerificator(mocker, new AtLeastOnceVerifier()) as any as SimpleCallVerificatorType<T>
+    return new SimpleCallVerificator(getCallTracker(instance), new AtLeastOnceVerifier()) as any as SimpleCallVerificatorType<T>
 }
 
 export function verifyOnce<T>(instance: T): SimpleCallVerificatorType<T> {
-    const mocker = (instance as any).__mocktMocker as Mocker
-    return new SimpleCallVerificator(mocker, new OnceVerifier()) as any as SimpleCallVerificatorType<T>
+    return new SimpleCallVerificator(getCallTracker(instance), new OnceVerifier()) as any as SimpleCallVerificatorType<T>
 }
 
 export function verifyNever<T>(instance: T): SimpleCallVerificatorType<T> {
-    const mocker = (instance as any).__mocktMocker as Mocker
-    return new SimpleCallVerificator(mocker, new NeverVerifier()) as any as SimpleCallVerificatorType<T>
+    return new SimpleCallVerificator(getCallTracker(instance), new NeverVerifier()) as any as SimpleCallVerificatorType<T>
 }
 
 export function verifyTimes<T>(times: number, instance: T): SimpleCallVerificatorType<T> {
-    const mocker = (instance as any).__mocktMocker as Mocker
-    return new SimpleCallVerificator(mocker, new TimesVerifier(times)) as any as SimpleCallVerificatorType<T>
+    return new SimpleCallVerificator(getCallTracker(instance), new TimesVerifier(times)) as any as SimpleCallVerificatorType<T>
 }
 
 export function verifyAtLeast<T>(times: number, instance: T): SimpleCallVerificatorType<T> {
-    const mocker = (instance as any).__mocktMocker as Mocker
-    return new SimpleCallVerificator(mocker, new AtLeastVerifier(times)) as any as SimpleCallVerificatorType<T>
+    return new SimpleCallVerificator(getCallTracker(instance), new AtLeastVerifier(times)) as any as SimpleCallVerificatorType<T>
 }
 
 export function verifyAtMost<T>(times: number, instance: T): SimpleCallVerificatorType<T> {
-    const mocker = (instance as any).__mocktMocker as Mocker
-    return new SimpleCallVerificator(mocker, new AtMostVerifier(times)) as any as SimpleCallVerificatorType<T>
+    return new SimpleCallVerificator(getCallTracker(instance), new AtMostVerifier(times)) as any as SimpleCallVerificatorType<T>
 }
 
 export function verifyMulti<T>(instance: T): MultipleCallVerificatorType<T> {
-    const mocker = (instance as any).__mocktMocker as Mocker
-    return new MultipleCallVerificator(mocker) as any as MultipleCallVerificatorType<T>
+    return new MultipleCallVerificator(getCallTracker(instance)) as any as MultipleCallVerificatorType<T>
 }
 
 export type SimpleCallVerificatorType<T> = {

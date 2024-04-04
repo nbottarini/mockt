@@ -6,6 +6,7 @@ import { Matcher } from './matchers/Matcher'
 import { eq } from './matchers/EqualsMatcher'
 import { NullMethodStub } from './methodStubs/NullMethodStub'
 import { MethodCall } from '@/callVerification/MethodCall'
+import { CallTracker } from '@/lib/CallTracker'
 
 export class Mocker {
     private internalMock: any = {}
@@ -13,7 +14,7 @@ export class Mocker {
     readonly instance: any = {}
     private objectInspector = new ObjectInspector()
     private methodStubs: Record<string, MethodStub<any>[]> = {}
-    private methodCalls: MethodCall[] = []
+    readonly callTracker = new CallTracker()
     private mocktProperty = '__mocktMocker'
 
     constructor(private clazz?: any) {
@@ -44,7 +45,7 @@ export class Mocker {
                 return target[name]
             },
             set: (target: any, name: PropertyKey, newValue: any) => {
-                if (name !== this.mocktProperty) this.methodCalls.push(new MethodCall('setProperty', [name, newValue]))
+                if (name !== this.mocktProperty) this.callTracker.add(new MethodCall('setProperty', [name, newValue]))
                 target[name] = newValue
                 return true
             }
@@ -109,7 +110,7 @@ export class Mocker {
         Object.defineProperty(this.instance, propertyName, {
             get: this.createExecutor(propertyName),
             set: (value: any) => {
-                this.methodCalls.push(new MethodCall('setProperty', [propertyName, value]))
+                this.callTracker.add(new MethodCall('setProperty', [propertyName, value]))
             },
             configurable: true,
         })
@@ -124,7 +125,7 @@ export class Mocker {
 
     private createExecutor(propertyName: string): (...args: any[]) => any {
         return (...args: any[]) => {
-            this.methodCalls.push(new MethodCall(propertyName, args))
+            this.callTracker.add(new MethodCall(propertyName, args))
             const methodStub = this.findMethodStub(propertyName, args)
             return methodStub.execute(args)
         }
@@ -146,27 +147,15 @@ export class Mocker {
         return new NullMethodStub(name)
     }
 
-    getMatchingCalls(methodName: string, matchers: Matcher<any>[]): MethodCall[] {
-        return this.methodCalls.filter(call => call.name === methodName && call.matches(matchers))
-    }
-
-    getMethodCalls(methodName: string): MethodCall[] {
-        return this.methodCalls.filter(call => call.name === methodName)
-    }
-
-    getAllCalls(): MethodCall[] {
-        return this.methodCalls
-    }
-
     resetCalls() {
         for (let methodName of Object.keys(this.methodStubs)) {
             this.methodStubs[methodName].forEach(stub => stub.enable())
         }
-        this.methodCalls = []
+        this.callTracker.reset()
     }
 
     reset() {
         this.methodStubs = {}
-        this.methodCalls = []
+        this.callTracker.reset()
     }
 }
