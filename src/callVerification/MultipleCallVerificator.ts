@@ -18,6 +18,7 @@ export class MultipleCallVerificator {
     }
 
     called() {
+        this.failIfEmptyCallsToVerify()
         const failedCalls: CallToVerify[] = []
         for (let callToVerify of this.callsToVerify) {
             const calls = this.callTracker.getMatchingCalls(callToVerify.name, callToVerify.matchers)
@@ -35,6 +36,7 @@ export class MultipleCallVerificator {
     }
 
     never() {
+        this.failIfEmptyCallsToVerify()
         const failedCalls: MethodCall[] = []
         for (let callToVerify of this.callsToVerify) {
             const calls = this.callTracker.getMatchingCalls(callToVerify.name, callToVerify.matchers)
@@ -52,11 +54,25 @@ export class MultipleCallVerificator {
     }
 
     calledInOrder() {
+        this.failIfEmptyCallsToVerify()
+        // let pendingCallsToVerify = [...this.callsToVerify]
+        // for (const call of this.callTracker.getAllCalls()) {
+        //     const callToVerify = pendingCallsToVerify[0]
+        //     if (call.name === callToVerify.name && call.matches(callToVerify.matchers)) {
+        //         pendingCallsToVerify = pendingCallsToVerify.slice(1)
+        //     }
+        // }
+
         throw new Error('Not implemented')
     }
 
     calledInSequence() {
+        this.failIfEmptyCallsToVerify()
         throw new Error('Not implemented')
+    }
+
+    private failIfEmptyCallsToVerify() {
+        if (this.callsToVerify.length === 0) throw new Error('Must specify at least one method or property to verify')
     }
 
     protected getAllCallsMessage(): string {
