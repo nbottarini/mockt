@@ -104,7 +104,7 @@ describe('mocking class method', () => {
 
     describe('arrow method', () => {
         it('when not-stubbed throws TypeError', () => {
-            expect(() =>  myClassMock.arrowMethod(2)).toThrow(TypeError)
+            expect(() => myClassMock.arrowMethod(2)).toThrow(TypeError)
         })
 
         it('when stubbed returns configured value', () => {

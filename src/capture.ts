@@ -6,22 +6,33 @@ export function capture<T extends object>(instance: T): CaptureType<T> {
 }
 
 export function captureFirst<T extends object>(instance: T): CaptureType<T> {
-    return createProxy(instance, calls => calls[0].args)
+    return createCaptureProxy(instance, calls => calls[0].args)
 }
 
 export function captureLast<T extends object>(instance: T): CaptureType<T> {
-    return createProxy(instance, calls => calls[calls.length - 1].args)
+    return createCaptureProxy(instance, calls => calls[calls.length - 1].args)
 }
 
 export function captureAll<T extends object>(instance: T): MultiCaptureType<T> {
-    return createProxy(instance, calls => calls.map(it => it.args))
+    return createCaptureProxy(instance, calls => calls.map(it => it.args))
 }
 
-function createProxy(instance: any, returnFunc: (calls: MethodCall[]) => any): any {
+function createCaptureProxy(instance: any, returnFunc: (calls: MethodCall[]) => any): any {
     const callTracker = getCallTracker(instance)
+
     return new Proxy({}, {
         get(target: any, property: PropertyKey): any {
-            const allCalls = callTracker.getMethodCalls(property.toString())
+            const propertyName = property.toString()
+            if (propertyName === 'setProperty') {
+                return (name: string) => {
+                    const allCalls = callTracker.getMethodCalls(propertyName)
+                        .filter(it => it.args[0] === name)
+                    if (allCalls.length === 0) return []
+                    return returnFunc(allCalls.map(it => new MethodCall(it.name, [it.args[1]])))
+                }
+            }
+
+            const allCalls = callTracker.getMethodCalls(propertyName)
             if (allCalls.length === 0) return []
             return returnFunc(allCalls)
         }
@@ -31,12 +42,11 @@ function createProxy(instance: any, returnFunc: (calls: MethodCall[]) => any): a
 export type CaptureType<T> = {
     [K in keyof T]: T[K] extends ((...args: infer A) => any) ? [...A] : void
 } & {
-    setProperty(name: keyof T): any
+    setProperty<K extends keyof T>(name: K): T[K][]
 }
-
 
 export type MultiCaptureType<T> = {
     [K in keyof T]: T[K] extends ((...args: infer A) => any) ? [...A][] : void
 } & {
-    setProperty(name: keyof T): any[]
+    setProperty<K extends keyof T>(name: K): T[K][][]
 }
