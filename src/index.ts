@@ -28,4 +28,4 @@ export * from './matchers/OrMatcher'
 export * from './matchers/RangeMatcher'
 
 export * from './methodStubs/MethodStubBuilder'
-export { getCallTracker } from '@/lib/getCallTracker'
+export { getInvocationTracker } from '@/lib/getInvocationTracker'

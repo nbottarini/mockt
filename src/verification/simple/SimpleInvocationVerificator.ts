@@ -1,12 +1,12 @@
 import { Matcher } from '@/matchers/Matcher'
 import { eq } from '@/matchers/EqualsMatcher'
-import { SimpleCallVerifier } from '@/callVerification/simple/verifiers/SimpleCallVerifier'
-import { CallTracker } from '@/lib/CallTracker'
+import { SimpleInvocationVerifier } from '@/verification/simple/verifiers/SimpleInvocationVerifier'
+import { InvocationTracker } from '@/lib/InvocationTracker'
 
-export class SimpleCallVerificator {
-    constructor(private callTracker: CallTracker, private verifier: SimpleCallVerifier) {
+export class SimpleInvocationVerificator {
+    constructor(private callTracker: InvocationTracker, private verifier: SimpleInvocationVerifier) {
         return new Proxy(this, {
-            get: (target: SimpleCallVerificator, name: PropertyKey) => {
+            get: (target: SimpleInvocationVerificator, name: PropertyKey) => {
                 return this.methodVerifier(name.toString())
             }
         })
@@ -21,7 +21,7 @@ export class SimpleCallVerificator {
                 nameToVerify = args[0]
             }
             const matchers = argsToVerify.map(it => it instanceof Matcher ? it : eq(it))
-            const calls = this.callTracker.getMatchingCalls(nameToVerify, matchers)
+            const calls = this.callTracker.getMatchingInvocations(nameToVerify, matchers)
             this.verifier.verify(this.callTracker, nameToVerify, matchers, calls)
         }
     }

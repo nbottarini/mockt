@@ -1,6 +1,6 @@
 import { Matcher } from '@/matchers/Matcher'
 
-export class MethodCall {
+export class Invocation {
     constructor(readonly name: string, readonly args: any[]) {
     }
 

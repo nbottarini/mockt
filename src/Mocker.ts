@@ -5,8 +5,8 @@ import { MethodStub } from './methodStubs/MethodStub'
 import { Matcher } from './matchers/Matcher'
 import { eq } from './matchers/EqualsMatcher'
 import { NullMethodStub } from './methodStubs/NullMethodStub'
-import { MethodCall } from '@/callVerification/MethodCall'
-import { CallTracker } from '@/lib/CallTracker'
+import { Invocation } from '@/verification/Invocation'
+import { InvocationTracker } from '@/lib/InvocationTracker'
 
 export class Mocker {
     private internalMock: any = {}
@@ -14,7 +14,7 @@ export class Mocker {
     readonly instance: any = {}
     private objectInspector = new ObjectInspector()
     private methodStubs: Record<string, MethodStub<any>[]> = {}
-    readonly callTracker = new CallTracker()
+    readonly invocationTracker = new InvocationTracker()
     private mocktProperty = '__mocktMocker'
 
     constructor(private clazz?: any) {
@@ -45,7 +45,7 @@ export class Mocker {
                 return target[name]
             },
             set: (target: any, name: PropertyKey, newValue: any) => {
-                if (name !== this.mocktProperty) this.callTracker.add(new MethodCall('setProperty', [name, newValue]))
+                if (name !== this.mocktProperty) this.invocationTracker.add(new Invocation('setProperty', [name, newValue]))
                 target[name] = newValue
                 return true
             }
@@ -110,7 +110,7 @@ export class Mocker {
         Object.defineProperty(this.instance, propertyName, {
             get: this.createExecutor(propertyName),
             set: (value: any) => {
-                this.callTracker.add(new MethodCall('setProperty', [propertyName, value]))
+                this.invocationTracker.add(new Invocation('setProperty', [propertyName, value]))
             },
             configurable: true,
         })
@@ -125,7 +125,7 @@ export class Mocker {
 
     private createExecutor(propertyName: string): (...args: any[]) => any {
         return (...args: any[]) => {
-            this.callTracker.add(new MethodCall(propertyName, args))
+            this.invocationTracker.add(new Invocation(propertyName, args))
             const methodStub = this.findMethodStub(propertyName, args)
             return methodStub.execute(args)
         }
@@ -151,11 +151,11 @@ export class Mocker {
         for (let methodName of Object.keys(this.methodStubs)) {
             this.methodStubs[methodName].forEach(stub => stub.enable())
         }
-        this.callTracker.reset()
+        this.invocationTracker.reset()
     }
 
     reset() {
         this.methodStubs = {}
-        this.callTracker.reset()
+        this.invocationTracker.reset()
     }
 }

@@ -1,9 +1,9 @@
-import { MethodCall } from '@/callVerification/MethodCall'
-import { CallTracker } from '@/lib/CallTracker'
+import { Invocation } from '@/verification/Invocation'
+import { InvocationTracker } from '@/lib/InvocationTracker'
 
 export class Spy<T extends object> {
     readonly instance: T
-    readonly callTracker = new CallTracker()
+    readonly invocationTracker = new InvocationTracker()
     private mocktProperty = '__mocktSpy'
 
     constructor(instance: T) {
@@ -16,16 +16,16 @@ export class Spy<T extends object> {
                 const property = instance[name]
                 if (typeof property === 'function')  {
                     return (...args: any[]) => {
-                        this.callTracker.add(new MethodCall(name.toString(), args))
+                        this.invocationTracker.add(new Invocation(name.toString(), args))
                         return property(...args)
                     }
                 } else {
-                    this.callTracker.add(new MethodCall(name.toString(), []))
+                    this.invocationTracker.add(new Invocation(name.toString(), []))
                 }
                 return property
             },
             set: (target: any, name: PropertyKey, newValue: any) => {
-                if (name !== this.mocktProperty) this.callTracker.add(new MethodCall('setProperty', [name, newValue]))
+                if (name !== this.mocktProperty) this.invocationTracker.add(new Invocation('setProperty', [name, newValue]))
                 target[name] = newValue
                 return true
             }

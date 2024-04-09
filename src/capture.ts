@@ -1,5 +1,5 @@
-import { getCallTracker } from '@/lib/getCallTracker'
-import { MethodCall } from '@/callVerification/MethodCall'
+import { getInvocationTracker } from '@/lib/getInvocationTracker'
+import { Invocation } from '@/verification/Invocation'
 
 export function capture<T extends object>(instance: T): CaptureType<T> {
     return captureFirst(instance)
@@ -17,22 +17,22 @@ export function captureAll<T extends object>(instance: T): MultiCaptureType<T> {
     return createCaptureProxy(instance, calls => calls.map(it => it.args))
 }
 
-function createCaptureProxy(instance: any, returnFunc: (calls: MethodCall[]) => any): any {
-    const callTracker = getCallTracker(instance)
+function createCaptureProxy(instance: any, returnFunc: (calls: Invocation[]) => any): any {
+    const callTracker = getInvocationTracker(instance)
 
     return new Proxy({}, {
         get(target: any, property: PropertyKey): any {
             const propertyName = property.toString()
             if (propertyName === 'setProperty') {
                 return (name: string) => {
-                    const allCalls = callTracker.getMethodCalls(propertyName)
+                    const allCalls = callTracker.getInvocationsByName(propertyName)
                         .filter(it => it.args[0] === name)
                     if (allCalls.length === 0) return []
-                    return returnFunc(allCalls.map(it => new MethodCall(it.name, [it.args[1]])))
+                    return returnFunc(allCalls.map(it => new Invocation(it.name, [it.args[1]])))
                 }
             }
 
-            const allCalls = callTracker.getMethodCalls(propertyName)
+            const allCalls = callTracker.getInvocationsByName(propertyName)
             if (allCalls.length === 0) return []
             return returnFunc(allCalls)
         }
