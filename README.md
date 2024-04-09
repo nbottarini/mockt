@@ -16,3 +16,34 @@ Yarn:
 ```
 $ yarn add -D mockt
 ```
+
+## Simple Example
+
+```typescript
+const calculator = mockt(Calculator)
+when(calculator).sum(2, any()).returns(3)
+
+const actual = calculator.sum(2, 8)
+
+expect(actual).toEqual(3)
+verify(calculator).sum(any(), 8)
+```
+
+## Features
+- Typescript Support and IDE Autocompletion
+- Class mocks
+- Abstract class mocks
+- Interface mocks
+- Flexible stubbing with multiple returns, custom function call, errors and promises.
+- Spy on real objects
+- Argument Capturing
+- Verification atLeast, atMost, once, times(n)
+- Verification called and never called
+- Properties read and write verification
+- Verification order
+- Argument Matchers for stubs and verifications
+- Reset mock stubs
+- Reset mock recorded calls
+
+## Usage
+

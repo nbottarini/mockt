@@ -1,4 +1,3 @@
-import { Invocation } from '@/verification/Invocation'
 import { InvocationTracker } from '@/lib/InvocationTracker'
 
 export class Spy<T extends object> {
