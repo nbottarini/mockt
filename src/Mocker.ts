@@ -5,7 +5,6 @@ import { MethodStub } from './methodStubs/MethodStub'
 import { Matcher } from './matchers/Matcher'
 import { eq } from './matchers/EqualsMatcher'
 import { NullMethodStub } from './methodStubs/NullMethodStub'
-import { Invocation } from '@/verification/Invocation'
 import { InvocationTracker } from '@/lib/InvocationTracker'
 
 export class Mocker {
@@ -45,7 +44,7 @@ export class Mocker {
                 return target[name]
             },
             set: (target: any, name: PropertyKey, newValue: any) => {
-                if (name !== this.mocktProperty) this.invocationTracker.add(new Invocation('setProperty', [name, newValue]))
+                if (name !== this.mocktProperty) this.invocationTracker.add('setProperty', [name, newValue])
                 target[name] = newValue
                 return true
             }
@@ -110,7 +109,7 @@ export class Mocker {
         Object.defineProperty(this.instance, propertyName, {
             get: this.createExecutor(propertyName),
             set: (value: any) => {
-                this.invocationTracker.add(new Invocation('setProperty', [propertyName, value]))
+                this.invocationTracker.add('setProperty', [propertyName, value])
             },
             configurable: true,
         })
@@ -125,7 +124,7 @@ export class Mocker {
 
     private createExecutor(propertyName: string): (...args: any[]) => any {
         return (...args: any[]) => {
-            this.invocationTracker.add(new Invocation(propertyName, args))
+            this.invocationTracker.add(propertyName, args)
             const methodStub = this.findMethodStub(propertyName, args)
             return methodStub.execute(args)
         }

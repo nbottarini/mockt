@@ -16,16 +16,16 @@ export class Spy<T extends object> {
                 const property = instance[name]
                 if (typeof property === 'function')  {
                     return (...args: any[]) => {
-                        this.invocationTracker.add(new Invocation(name.toString(), args))
+                        this.invocationTracker.add(name.toString(), args)
                         return property(...args)
                     }
                 } else {
-                    this.invocationTracker.add(new Invocation(name.toString(), []))
+                    this.invocationTracker.add(name.toString(), [])
                 }
                 return property
             },
             set: (target: any, name: PropertyKey, newValue: any) => {
-                if (name !== this.mocktProperty) this.invocationTracker.add(new Invocation('setProperty', [name, newValue]))
+                if (name !== this.mocktProperty) this.invocationTracker.add('setProperty', [name, newValue])
                 target[name] = newValue
                 return true
             }

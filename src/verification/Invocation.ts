@@ -1,7 +1,7 @@
 import { Matcher } from '@/matchers/Matcher'
 
 export class Invocation {
-    constructor(readonly name: string, readonly args: any[]) {
+    constructor(readonly index: number, readonly name: string, readonly args: any[]) {
     }
 
     matches(matchers: Matcher<any>[]): boolean {

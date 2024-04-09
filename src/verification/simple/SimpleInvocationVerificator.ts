@@ -4,7 +4,7 @@ import { SimpleInvocationVerifier } from '@/verification/simple/verifiers/Simple
 import { InvocationTracker } from '@/lib/InvocationTracker'
 
 export class SimpleInvocationVerificator {
-    constructor(private callTracker: InvocationTracker, private verifier: SimpleInvocationVerifier) {
+    constructor(private invocationTracker: InvocationTracker, private verifier: SimpleInvocationVerifier) {
         return new Proxy(this, {
             get: (target: SimpleInvocationVerificator, name: PropertyKey) => {
                 return this.methodVerifier(name.toString())
@@ -21,8 +21,8 @@ export class SimpleInvocationVerificator {
                 nameToVerify = args[0]
             }
             const matchers = argsToVerify.map(it => it instanceof Matcher ? it : eq(it))
-            const calls = this.callTracker.getMatchingInvocations(nameToVerify, matchers)
-            this.verifier.verify(this.callTracker, nameToVerify, matchers, calls)
+            const invocations = this.invocationTracker.getMatchingInvocations(nameToVerify, matchers)
+            this.verifier.verify(this.invocationTracker, nameToVerify, matchers, invocations)
         }
     }
 }

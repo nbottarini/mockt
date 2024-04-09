@@ -4,16 +4,16 @@ import { Matcher } from '@/matchers/Matcher'
 export class InvocationTracker {
     private invocations: Invocation[] = []
 
-    add(invocation: Invocation): void {
-        this.invocations.push(invocation)
+    add(name: string, args: any[]): void {
+        this.invocations.push(new Invocation(this.invocations.length, name, args))
     }
 
     getMatchingInvocations(name: string, matchers: Matcher<any>[]): Invocation[] {
-        return this.invocations.filter(call => call.name === name && call.matches(matchers))
+        return this.invocations.filter(invocation => invocation.name === name && invocation.matches(matchers))
     }
 
     getInvocationsByName(name: string): Invocation[] {
-        return this.invocations.filter(call => call.name === name)
+        return this.invocations.filter(invocation => invocation.name === name)
     }
 
     getAllInvocations(): Invocation[] {

@@ -18,60 +18,58 @@ export class MultipleInvocationsVerificator {
     }
 
     called() {
-        this.failIfEmptyCallsToVerify()
-        const failedCalls: InvocationToVerify[] = []
-        for (let callToVerify of this.invocationsToVerify) {
-            const calls = this.invocationTracker.getMatchingInvocations(callToVerify.name, callToVerify.matchers)
-            if (calls.length === 0) {
-                failedCalls.push(callToVerify)
+        this.failIfEmptyInvocationsToVerify()
+        const failedInvocations: InvocationToVerify[] = []
+        for (let invocationToVerify of this.invocationsToVerify) {
+            const invocations = this.invocationTracker.getMatchingInvocations(invocationToVerify.name, invocationToVerify.matchers)
+            if (invocations.length === 0) {
+                failedInvocations.push(invocationToVerify)
             }
         }
-        if (failedCalls.length > 0) {
+        if (failedInvocations.length > 0) {
             const message = 'Expected calls:\n' +
                 this.invocationsToVerify.map(m => `- ${m.toString()}\n`).join('') +
                 '\nMissing calls:\n' +
-                failedCalls.map(m => `- ${m.toString()}\n`).join('')
+                failedInvocations.map(m => `- ${m.toString()}\n`).join('')
             throw new Error(message + this.getAllCallsMessage())
         }
     }
 
     never() {
-        this.failIfEmptyCallsToVerify()
-        const failedCalls: Invocation[] = []
-        for (let callToVerify of this.invocationsToVerify) {
-            const calls = this.invocationTracker.getMatchingInvocations(callToVerify.name, callToVerify.matchers)
-            if (calls.length > 0) {
-                failedCalls.push(...calls)
+        this.failIfEmptyInvocationsToVerify()
+        const failedInvocations: Invocation[] = []
+        for (let invocationToVerify of this.invocationsToVerify) {
+            const invocations = this.invocationTracker.getMatchingInvocations(invocationToVerify.name, invocationToVerify.matchers)
+            if (invocations.length > 0) {
+                failedInvocations.push(...invocations)
             }
         }
-        if (failedCalls.length > 0) {
+        if (failedInvocations.length > 0) {
             const message = 'Expected to never be called:\n' +
                 this.invocationsToVerify.map(m => `- ${m.toString()}\n`).join('') +
                 '\nUnexpected calls:\n' +
-                failedCalls.map(m => `- ${m.toString()}\n`).join('')
+                failedInvocations.map(m => `- ${m.toString()}\n`).join('')
             throw new Error(message + this.getAllCallsMessage())
         }
     }
 
     calledInOrder() {
-        this.failIfEmptyCallsToVerify()
-        // let pendingCallsToVerify = [...this.invocationsToVerify]
-        // for (const call of this.invocationTracker.getAllCalls()) {
-        //     const callToVerify = pendingCallsToVerify[0]
-        //     if (call.name === callToVerify.name && call.matches(callToVerify.matchers)) {
-        //         pendingCallsToVerify = pendingCallsToVerify.slice(1)
-        //     }
-        // }
-
-        throw new Error('Not implemented')
+        this.failIfEmptyInvocationsToVerify()
+        let lastIndex = -1
+        for (let invocationToVerify of this.invocationsToVerify) {
+            const invocations = this.invocationTracker
+                .getMatchingInvocations(invocationToVerify.name, invocationToVerify.matchers)
+                .filter(it => it.index > lastIndex)
+            if (invocations.length === 0) {
+                const methodString = `${invocationToVerify.name}(${invocationToVerify.matchers.map(m => m.toString()).join(', ')})`
+                const message = `Expected "${methodString}" to be called in the specified order.\n`
+                throw new Error(message + this.getAllCallsMessage())
+            }
+            lastIndex = invocations[0].index
+        }
     }
 
-    calledInSequence() {
-        this.failIfEmptyCallsToVerify()
-        throw new Error('Not implemented')
-    }
-
-    private failIfEmptyCallsToVerify() {
+    private failIfEmptyInvocationsToVerify() {
         if (this.invocationsToVerify.length === 0) throw new Error('Must specify at least one method or property to verify')
     }
 

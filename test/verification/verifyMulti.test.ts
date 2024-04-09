@@ -100,12 +100,11 @@ describe('verifyMulti never', () => {
             `- methodThatReturnsParam(3)\n` +
             `\nAll calls:\n` +
             `- methodThatReturnsParam(3)\n`
-
         )
     })
 })
 
-describe.skip('verifyMulti calledInOrder', () => {
+describe('verifyMulti calledInOrder', () => {
     it('success if all methods are called in sequence', () => {
         myClassMock.methodThatReturns1()
         myClassMock.methodThatReturnsParam(3)
@@ -191,45 +190,21 @@ describe.skip('verifyMulti calledInOrder', () => {
             verifyMulti(myClassMock).calledInOrder()
         }).toThrow('Must specify at least one method or property to verify')
     })
-})
 
-describe.skip('verifyMulti calledInSequence', () => {
-    it('success if all methods are called in sequence', () => {
+    it('fails if wrong order', () => {
         myClassMock.methodThatReturns1()
         myClassMock.methodThatReturnsParam(3)
 
-        verifyMulti(myClassMock)
-            .methodThatReturns1()
-            .methodThatReturnsParam(3)
-            .calledInSequence()
-    })
-
-    it('success if all methods are called in sequence no matter previous calls', () => {
-        myClassMock.otherMethod(10)
-        myClassMock.methodThatReturns1()
-        myClassMock.methodThatReturnsParam(3)
-
-        verifyMulti(myClassMock)
-            .methodThatReturns1()
-            .methodThatReturnsParam(3)
-            .calledInSequence()
-    })
-
-    it('success if all methods are called in sequence no matter next calls', () => {
-        myClassMock.methodThatReturns1()
-        myClassMock.methodThatReturnsParam(3)
-        myClassMock.otherMethod(10)
-
-        verifyMulti(myClassMock)
-            .methodThatReturns1()
-            .methodThatReturnsParam(3)
-            .calledInSequence()
-    })
-
-    it('fails if no method to verify', () => {
         expect(() => {
-            verifyMulti(myClassMock).calledInSequence()
-        }).toThrow('Must specify at least one method or property to verify')
+            verifyMulti(myClassMock)
+                .methodThatReturnsParam(3)
+                .methodThatReturns1()
+                .calledInOrder()
+        }).toThrow(
+            `Expected "methodThatReturns1()" to be called in the specified order.\n\n` +
+            `All calls:\n` +
+            `- methodThatReturns1()\n` +
+            `- methodThatReturnsParam(3)\n`        )
     })
 })
 

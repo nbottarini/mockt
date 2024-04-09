@@ -6,35 +6,35 @@ export function capture<T extends object>(instance: T): CaptureType<T> {
 }
 
 export function captureFirst<T extends object>(instance: T): CaptureType<T> {
-    return createCaptureProxy(instance, calls => calls[0].args)
+    return createCaptureProxy(instance, invocations => invocations[0].args)
 }
 
 export function captureLast<T extends object>(instance: T): CaptureType<T> {
-    return createCaptureProxy(instance, calls => calls[calls.length - 1].args)
+    return createCaptureProxy(instance, invocations => invocations[invocations.length - 1].args)
 }
 
 export function captureAll<T extends object>(instance: T): MultiCaptureType<T> {
-    return createCaptureProxy(instance, calls => calls.map(it => it.args))
+    return createCaptureProxy(instance, invocations => invocations.map(it => it.args))
 }
 
-function createCaptureProxy(instance: any, returnFunc: (calls: Invocation[]) => any): any {
-    const callTracker = getInvocationTracker(instance)
+function createCaptureProxy(instance: any, returnFunc: (invocations: Invocation[]) => any): any {
+    const invocationTracker = getInvocationTracker(instance)
 
     return new Proxy({}, {
         get(target: any, property: PropertyKey): any {
             const propertyName = property.toString()
             if (propertyName === 'setProperty') {
                 return (name: string) => {
-                    const allCalls = callTracker.getInvocationsByName(propertyName)
+                    const allInvocations = invocationTracker.getInvocationsByName(propertyName)
                         .filter(it => it.args[0] === name)
-                    if (allCalls.length === 0) return []
-                    return returnFunc(allCalls.map(it => new Invocation(it.name, [it.args[1]])))
+                    if (allInvocations.length === 0) return []
+                    return returnFunc(allInvocations.map(it => new Invocation(it.index, it.name, [it.args[1]])))
                 }
             }
 
-            const allCalls = callTracker.getInvocationsByName(propertyName)
-            if (allCalls.length === 0) return []
-            return returnFunc(allCalls)
+            const allInvocations = invocationTracker.getInvocationsByName(propertyName)
+            if (allInvocations.length === 0) return []
+            return returnFunc(allInvocations)
         }
     })
 }
