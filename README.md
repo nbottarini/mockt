@@ -13,17 +13,17 @@
 
 ## Getting Started
 
-Npm:
+**Npm**:
 ```
 $ npm install --save-dev mockt
 ```
 
-Yarn:
+**Yarn**:
 ```
 $ yarn add -D mockt
 ```
 
-Now write a simple test:
+Now let's write a simple test:
 
 ```typescript
 const calculator = mockt(Calculator)
