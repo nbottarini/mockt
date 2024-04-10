@@ -3,9 +3,13 @@
 [![CI Status](https://github.com/nbottarini/mockt/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/nbottarini/mockt/actions)
 
 # Mockt
-Mocking library for Typescript/Javascript
 
-## Installation
+<!-- A spacer -->
+<p>&nbsp;</p>
+
+<h2 align="center">Joyful mocking library for Typescript and Javascript</h2>
+
+## Getting Started
 
 Npm:
 ```
@@ -17,7 +21,7 @@ Yarn:
 $ yarn add -D mockt
 ```
 
-## Simple Example
+Now write a simple test:
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -28,6 +32,67 @@ const actual = calculator.sum(2, 8)
 expect(actual).toEqual(3)
 verify(calculator).sum(any(), 8)
 ```
+
+## Table of Contents
+ 
+- [Features](#features)
+- [Usage](#usage)
+  - [Class mocks](#class-mocks)
+    - [Arrow methods](#arrow-methods)
+  - [Abstract Class mocks](#abstract-class-mocks)
+  - [Interface mocks](#interface-mocks)
+  - [Generics](#generics)
+  - [Properties](#properties)
+    - [Getters](#getters)
+  - [Stubbing](#stubbing)
+    - [Multiple returns](#multiple-returns)
+    - [Function call](#function-call)
+    - [Throw error](#throw-error)
+    - [Promise resolve](#promise-resolve)
+    - [Promise reject](#promise-reject)
+  - [Matchers](#matchers)
+    - [Equals](#equals)
+      - [Deep equality and type conversion](#deep-equality-and-type-conversion)
+    - [Not Equals](#not-equals)
+    - [Identical](#identical)
+    - [Any](#any)
+    - [Any Number](#any-number)
+    - [Any String](#any-string)
+    - [Any Array](#any-array)
+    - [Any Object](#any-object)
+    - [Any Function](#any-function)
+    - [IsNull](#isnull)
+    - [IsNil](#isnil)
+    - [NotNull](#notnull)
+    - [NotNil](#notnil)
+    - [Less](#less)
+    - [More](#more)
+    - [Range](#range)
+    - [OfClass](#ofclass)
+    - [Nested matchers](#nested-matchers)
+    - [Not](#not)
+    - [And](#and)
+    - [Or](#or)
+  - [Verification](#verification)
+    - [Verify method called](#verify-method-called)
+    - [Verify property read](#verify-property-read)
+    - [Verify property set](#verify-property-set)
+    - [Verify method called at least n times](#verify-method-called-at-least-n-times)
+    - [Verify method called at most n times](#verify-method-called-at-most-n-times)
+    - [Verify method called exactly n times](#verify-method-called-exactly-n-times)
+    - [Verify method never called](#verify-method-never-called)
+    - [Verify multiple method calls](#verify-multiple-method-calls)
+    - [Verify multiple methods never called](#verify-multiple-methods-never-called)
+    - [Verify multiple methods called in expected order](#verify-multiple-methods-called-in-expected-order)
+  - [Capture arguments](#capture-arguments)
+    - [First call](#first-call)
+    - [Last call](#last-call)
+    - [All calls](#all-calls)
+    - [Setters](#setters)
+  - [Spies](#spies)
+  - [Reset](#reset)
+    - [Calls](#calls)
+    - [All](#all)
 
 ## Features
 - Typescript Support and IDE Autocompletion
@@ -155,9 +220,9 @@ when(user).name.returns('Alice')
 user.name // returns 'Alice'
 ```
 
-## Stubbing
+### Stubbing
 
-### Multiple returns
+#### Multiple returns
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -179,7 +244,7 @@ calculator.sum(2, 3) // returns 6
 calculator.sum(2, 3) // returns 7
 ```
 
-### Function call
+#### Function call
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -189,7 +254,7 @@ calculator.sum(2, 3) // returns 6
 calculator.sum(3, 4) // returns 12
 ```
 
-### Throw error
+#### Throw error
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -198,7 +263,7 @@ when(calculator).sum(any(), any()).throws(new Error('Some error'))
 calculator.sum(2, 3) // throws Error('Some error')
 ```
 
-### Promise resolve
+#### Promise resolve
 
 ```typescript
 const apiClient = mockt(ApiClient)
@@ -208,7 +273,7 @@ await apiClient.getUser() // returns user 1
 await apiClient.getUser() // returns user 2
 ```
 
-### Promise reject
+#### Promise reject
 
 ```typescript
 const apiClient = mockt(ApiClient)
@@ -217,9 +282,9 @@ when(apiClient).getUser().rejects(new Error('Some error'))
 await apiClient.getUser() // throws Error('Some error')
 ```
 
-## Matchers
+### Matchers
 
-### Equals
+#### Equals
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -232,7 +297,7 @@ calculator.sum(2, 4) // returns undefined
 **Note**: When a value is given instead of a matcher, the equals matcher is used.
 **Note**: Performs deep equality
 
-#### Deep equality and type conversion
+##### Deep equality and type conversion
 
 ```typescript
 const billingService = mockt(BillingService)
@@ -241,7 +306,7 @@ when(billingService).calculateFor(eq({ user: { age: '17' } })).returns(100)
 billingService.calculateFor({ user: { age: 17 } }) // returns 100
 ```
 
-### Not Equals
+#### Not Equals
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -251,7 +316,7 @@ calculator.sum(2, 6) // returns 5
 calculator.sum(2, 3) // returns undefined
 ```
 
-### Identical
+#### Identical
 
 ```typescript
 const billingService = mockt(BillingService)
@@ -262,7 +327,7 @@ billingService.calculateFor(alice) // returns 100
 billingService.calculateFor({ name: 'Alice' }) // returns undefined
 ```
 
-### Any
+#### Any
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -273,7 +338,7 @@ calculator.sum(2, 6) // returns 5
 calculator.sum(3, 5) // returns undefined
 ```
 
-### Any Number
+#### Any Number
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -284,7 +349,7 @@ calculator.sum('1', 2) // returns undefined
 calculator.sum(1, '2') // returns 10
 ```
 
-### Any String
+#### Any String
 
 ```typescript
 const splitter = mockt(StringSplitter)
@@ -295,7 +360,7 @@ splitter.split('Bye') // returns ['Hello', 'World']
 splitter.split(3) // returns undefined
 ```
 
-### Any Array
+#### Any Array
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -307,7 +372,7 @@ calculator.average([]) // returns 10
 calculator.average(3) // returns undefined
 ```
 
-### Any Object
+#### Any Object
 
 ```typescript
 const billingService = mockt(BillingService)
@@ -318,7 +383,7 @@ billingService.calculateFor({}) // returns 2000
 billingService.calculateFor('alice') // returns undefined
 ```
 
-### Any Function
+#### Any Function
 
 ```typescript
 const caller = mockt(FunctionCalled)
@@ -329,7 +394,7 @@ caller.call(function () {}) // returns 10
 caller.call('alice') // returns undefined
 ```
 
-### IsNull
+#### IsNull
 
 ```typescript
 const billingService = mockt(BillingService)
@@ -342,7 +407,7 @@ billingService.calculateFor('') // Doesn't throw
 billingService.calculateFor([]) // Doesn't throw
 ```
 
-### IsNil
+#### IsNil
 
 ```typescript
 const billingService = mockt(BillingService)
@@ -355,7 +420,7 @@ billingService.calculateFor('') // Doesn't throw
 billingService.calculateFor([]) // Doesn't throw
 ```
 
-### NotNull
+#### NotNull
 
 ```typescript
 const billingService = mockt(BillingService)
@@ -366,7 +431,7 @@ billingService.calculateFor(undefined) // returns 5000
 billingService.calculateFor(null) // returns undefined
 ```
 
-### NotNil
+#### NotNil
 
 ```typescript
 const billingService = mockt(BillingService)
@@ -377,7 +442,7 @@ billingService.calculateFor(undefined) // returns undefined
 billingService.calculateFor(null) // returns undefined
 ```
 
-### Less
+#### Less
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -388,7 +453,7 @@ calculator.sum(5, 2) // returns 10
 calculator.sum(6, 2) // returns undefined
 ```
 
-### More
+#### More
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -399,7 +464,7 @@ calculator.sum(5, 2) // returns 10
 calculator.sum(4, 2) // returns undefined
 ```
 
-### Range
+#### Range
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -413,7 +478,7 @@ calculator.sum(10, 2) // returns 10
 calculator.sum(11, 2) // returns undefined
 ```
 
-### OfClass
+#### OfClass
 
 ```typescript
 const billingService = mockt(BillingService)
@@ -423,7 +488,7 @@ billingService.calculateFor(new Employee('Alice')) // returns 2000
 billingService.calculateFor(new User('Alice')) // returns undefined
 ```
 
-### Nested matchers
+#### Nested matchers
 
 ```typescript
 const billingService = mockt(BillingService)
@@ -439,7 +504,7 @@ when(calculator).average(eq([1, any(), 3])).returns(1)
 calculator.average([1, 2, 3]) // returns 1
 ```
 
-### Not
+#### Not
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -449,7 +514,7 @@ calculator.sum('5', 2) // returns 10
 calculator.sum(5, 2) // returns undefined
 ```
 
-### And
+#### And
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -460,7 +525,7 @@ calculator.sum(2, 2) // returns undefined
 calculator.sum(3, 2) // returns undefined
 ```
 
-### Or
+#### Or
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -471,9 +536,9 @@ calculator.sum(3, 2) // returns 10
 calculator.sum(1, 2) // returns undefined
 ```
 
-## Verification
+### Verification
 
-### Verify method called
+#### Verify method called
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -485,7 +550,7 @@ verify(calculator).sum(any(), 2) // passes
 verify(calculator).sum(2, 2) // fails
 ```
 
-### Verify property read
+#### Verify property read
 
 ```typescript
 const user = mockt(User)
@@ -496,7 +561,7 @@ verify(user).getProperty('name') // passes
 verify(user).getProperty('lastname') // fails
 ```
 
-### Verify property set
+#### Verify property set
 
 ```typescript
 const user = mockt(User)
@@ -508,7 +573,7 @@ verify(user).setProperty('name', any()) // passes
 verify(user).setProperty('name', 'Bob') // fails
 ```
 
-### Verify method called at least n times
+#### Verify method called at least n times
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -522,7 +587,7 @@ verifyAtLeast(3, calculator).sum(any(), any()) // passes
 verifyAtLeast(4, calculator).sum(any(), any()) // fails
 ```
 
-### Verify method called at most n times
+#### Verify method called at most n times
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -536,7 +601,7 @@ verifyAtMost(3, calculator).sum(1, any()) // passes
 verifyAtMost(2, calculator).sum(1, any()) // fails
 ```
 
-### Verify method called exactly n times
+#### Verify method called exactly n times
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -549,7 +614,7 @@ verifyTimes(3, calculator).sum(1, any()) // passes
 verifyTimes(2, calculator).sum(1, any()) // fails
 ```
 
-### Verify method never called
+#### Verify method never called
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -562,7 +627,7 @@ verifyNever(calculator).sum(1, 1) // passes
 verifyNever(calculator).sum(1, 2) // fails
 ```
 
-### Verify multiple method calls
+#### Verify multiple method calls
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -577,7 +642,7 @@ verifyMulti(calculator)
     .called() // passes
 ```
 
-### Verify multiple methods never called
+#### Verify multiple methods never called
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -592,7 +657,7 @@ verifyMulti(calculator)
     .never() // passes
 ```
 
-### Verify multiple methods called in given order
+#### Verify multiple methods called in expected order
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -620,9 +685,9 @@ verifyMulti(calculator)
     .calledInOrder() // fails
 ```
 
-## Capture Arguments
+### Capture arguments
 
-### First call
+#### First call
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -642,7 +707,7 @@ calculator.sum(1, 3)
 const [first, second] = captureFirst(calculator).sum // returns [1, 2]
 ```
 
-### Last call
+#### Last call
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -653,7 +718,7 @@ calculator.sum(1, 3)
 const [first, second] = captureLast(calculator).sum // returns [1, 3]
 ```
 
-### All calls
+#### All calls
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -664,7 +729,7 @@ calculator.sum(1, 3)
 const args = captureAll(calculator).sum // returns [[1, 2], [1, 3]]
 ```
 
-### Setters
+#### Setters
 
 ```typescript
 const user = mockt(User)
@@ -674,7 +739,7 @@ user.name = 'Alice'
 const [name] = capture(user).setProperty('name') // returns 'Alice'
 ```
 
-## Spies
+### Spies
 
 ```typescript
 const calculator = new Calculator()
@@ -686,9 +751,9 @@ verify(calculatorSpy).sum(1, 2) // passes
 verify(calculatorSpy).sum(2, 2) // fails
 ```
 
-## Reset
+### Reset
 
-### Calls
+#### Calls
 
 ```typescript
 const calculator = mockt(Calculator)
@@ -700,7 +765,7 @@ resetCalls(calculator)
 verify(calculatorSpy).sum(1, 2) // fails
 ```
 
-### All
+#### All
 
 ```typescript
 const calculator = mockt(Calculator)
