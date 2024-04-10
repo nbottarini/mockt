@@ -1834,20 +1834,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/plugin-alias@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "@rollup/plugin-alias@npm:5.1.0"
-  dependencies:
-    slash: "npm:^4.0.0"
-  peerDependencies:
-    rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
-  peerDependenciesMeta:
-    rollup:
-      optional: true
-  checksum: 10/2749f9563dba9274e4324fcd14ffe761fa66ee3baab307ba583d0348adfa2c1d2a164f59eac8c26a9ce7c713a99a991a831c072101e83697157ccf082c362310
-  languageName: node
-  linkType: hard
-
 "@rollup/plugin-commonjs@npm:^25.0.7":
   version: 25.0.7
   resolution: "@rollup/plugin-commonjs@npm:25.0.7"
@@ -4639,7 +4625,6 @@ __metadata:
     "@babel/core": "npm:^7.24.3"
     "@babel/preset-env": "npm:^7.24.3"
     "@babel/preset-typescript": "npm:^7.24.1"
-    "@rollup/plugin-alias": "npm:^5.1.0"
     "@rollup/plugin-commonjs": "npm:^25.0.7"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
     "@rollup/plugin-terser": "npm:^0.4.4"
@@ -4657,7 +4642,6 @@ __metadata:
     rollup: "npm:^3.29.4"
     rollup-plugin-dts: "npm:^6.1.0"
     rollup-plugin-exclude-dependencies-from-bundle: "npm:^1.1.23"
-    rollup-plugin-typescript-paths: "npm:^1.5.0"
     tslib: "npm:^2.6.2"
     typescript: "npm:^5.4.3"
   languageName: unknown
@@ -5177,15 +5161,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup-plugin-typescript-paths@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "rollup-plugin-typescript-paths@npm:1.5.0"
-  peerDependencies:
-    typescript: ">=3.4"
-  checksum: 10/ac0631452c2ec54a004e15eac1de843c9cb392b50159ae942413829a54e933d64a21f1f03822e0e2c5539fe332233fa55351045edb42d124663a5502d558d923
-  languageName: node
-  linkType: hard
-
 "rollup@npm:^3.29.4":
   version: 3.29.4
   resolution: "rollup@npm:3.29.4"
@@ -5293,13 +5268,6 @@ __metadata:
   version: 3.0.0
   resolution: "slash@npm:3.0.0"
   checksum: 10/94a93fff615f25a999ad4b83c9d5e257a7280c90a32a7cb8b4a87996e4babf322e469c42b7f649fd5796edd8687652f3fb452a86dc97a816f01113183393f11c
-  languageName: node
-  linkType: hard
-
-"slash@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "slash@npm:4.0.0"
-  checksum: 10/da8e4af73712253acd21b7853b7e0dbba776b786e82b010a5bfc8b5051a1db38ed8aba8e1e8f400dd2c9f373be91eb1c42b66e91abb407ff42b10feece5e1d2d
   languageName: node
   linkType: hard
 
