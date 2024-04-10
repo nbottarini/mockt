@@ -35,9 +35,26 @@ expect(actual).toEqual(3)
 verify(calculator).sum(any(), 8)
 ```
 
+## Features
+- Typescript Support and IDE Autocompletion
+- Class mocks
+- Abstract class mocks
+- Interface mocks
+- Generics support
+- Flexible stubbing with multiple returns, custom function call, errors and promises.
+- Properties stubbing
+- Spy on real objects
+- Argument Capturing
+- Verification atLeast, atMost, once, times(n)
+- Verification called and never called
+- Properties read and write verification
+- Verification order
+- Argument Matchers for stubs and verifications
+- Reset mock stubs
+- Reset mock recorded calls
+
 ## Table of Contents
  
-- [Features](#features)
 - [Usage](#usage)
   - [Class mocks](#class-mocks)
     - [Arrow methods](#arrow-methods)
@@ -95,24 +112,6 @@ verify(calculator).sum(any(), 8)
   - [Reset](#reset)
     - [Calls](#calls)
     - [All](#all)
-
-## Features
-- Typescript Support and IDE Autocompletion
-- Class mocks
-- Abstract class mocks
-- Interface mocks
-- Generics support
-- Flexible stubbing with multiple returns, custom function call, errors and promises.
-- Properties stubbing
-- Spy on real objects
-- Argument Capturing
-- Verification atLeast, atMost, once, times(n)
-- Verification called and never called
-- Properties read and write verification
-- Verification order
-- Argument Matchers for stubs and verifications
-- Reset mock stubs
-- Reset mock recorded calls
 
 ## Usage
 
