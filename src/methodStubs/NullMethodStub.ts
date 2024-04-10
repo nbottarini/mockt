@@ -1,4 +1,4 @@
-import { MethodStub } from './MethodStub'
+import { MethodStub } from '@/methodStubs/MethodStub'
 
 export class NullMethodStub<R> extends MethodStub<R> {
     constructor(name: string) {

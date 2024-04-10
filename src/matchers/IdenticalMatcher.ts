@@ -1,4 +1,4 @@
-import { Matcher } from './Matcher'
+import { Matcher } from '@/matchers/Matcher'
 
 export class IdenticalMatcher<T> extends Matcher<T> {
     constructor(private expected: T) {

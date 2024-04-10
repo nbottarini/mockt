@@ -1,4 +1,4 @@
-import { Matcher } from './Matcher'
+import { Matcher } from '@/matchers/Matcher'
 
 export class MoreMatcher extends Matcher<number> {
     constructor(private min: number) {

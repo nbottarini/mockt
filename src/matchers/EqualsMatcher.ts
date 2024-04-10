@@ -1,4 +1,4 @@
-import { Matcher } from './Matcher'
+import { Matcher } from '@/matchers/Matcher'
 import isEqualWith from 'lodash.isequalwith'
 
 export class EqualsMatcher<T> extends Matcher<T> {

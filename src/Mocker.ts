@@ -1,10 +1,10 @@
-import { MethodStubBuilder } from './methodStubs/MethodStubBuilder'
-import { isObject } from './lib/isObject'
-import { ObjectInspector } from './lib/ObjectInspector'
-import { MethodStub } from './methodStubs/MethodStub'
-import { Matcher } from './matchers/Matcher'
-import { eq } from './matchers/EqualsMatcher'
-import { NullMethodStub } from './methodStubs/NullMethodStub'
+import { MethodStubBuilder } from '@/methodStubs/MethodStubBuilder'
+import { isObject } from '@/lib/isObject'
+import { ObjectInspector } from '@/lib/ObjectInspector'
+import { MethodStub } from '@/methodStubs/MethodStub'
+import { Matcher } from '@/matchers/Matcher'
+import { eq } from '@/matchers/EqualsMatcher'
+import { NullMethodStub } from '@/methodStubs/NullMethodStub'
 import { InvocationTracker } from '@/lib/InvocationTracker'
 
 export class Mocker {

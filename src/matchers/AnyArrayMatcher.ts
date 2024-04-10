@@ -1,4 +1,4 @@
-import { Matcher } from './Matcher'
+import { Matcher } from '@/matchers/Matcher'
 
 export class AnyArray extends Matcher<any> {
     matches(value: any): boolean {

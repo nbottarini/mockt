@@ -1,4 +1,4 @@
-import { MethodStub } from './MethodStub'
+import { MethodStub } from '@/methodStubs/MethodStub'
 import { Matcher } from '@/matchers/Matcher'
 
 export class ThrowErrorMethodStub extends MethodStub<any> {

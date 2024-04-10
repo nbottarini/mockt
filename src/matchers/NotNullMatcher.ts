@@ -1,4 +1,4 @@
-import { Matcher } from './Matcher'
+import { Matcher } from '@/matchers/Matcher'
 
 export class NotNullMatcher<T> extends Matcher<T> {
     matches(value: T): boolean {

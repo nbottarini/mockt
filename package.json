@@ -1,6 +1,6 @@
 {
   "name": "mockt",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Joyful mocking library for Typescript and Javascript",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -52,7 +52,7 @@
     "jest-each": "^29.7.0",
     "jest-extended": "^4.0.2",
     "rollup": "^3.29.4",
-    "rollup-plugin-dts": "^5.3.1",
+    "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-exclude-dependencies-from-bundle": "^1.1.23",
     "tslib": "^2.6.2",
     "typescript": "^5.4.3"

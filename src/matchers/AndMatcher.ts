@@ -1,4 +1,4 @@
-import { Matcher } from './Matcher'
+import { Matcher } from '@/matchers/Matcher'
 import { EqualsMatcher } from '@/matchers/EqualsMatcher'
 
 export class AndMatcher<T> extends Matcher<T> {

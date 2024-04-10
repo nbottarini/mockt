@@ -1,4 +1,4 @@
-import { Mocker } from './Mocker'
+import { Mocker } from '@/Mocker'
 
 export function mockt<T>(clazz?: (new (...args: any[]) => T) | any): T {
     const mocker = new Mocker(clazz)

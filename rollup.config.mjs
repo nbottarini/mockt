@@ -4,7 +4,7 @@ import typescript from '@rollup/plugin-typescript'
 import dts from 'rollup-plugin-dts'
 import excludeDependenciesFromBundle from 'rollup-plugin-exclude-dependencies-from-bundle'
 import terser from '@rollup/plugin-terser'
-import { createRequire } from 'node:module';
+import { createRequire } from 'node:module'
 
 const require = createRequire(import.meta.url);
 const packageJson = require('./package.json');
@@ -36,6 +36,7 @@ export default [
         input: 'src/index.ts',
         output: [{ file: 'dist/types/index.d.ts', format: 'esm' }],
         plugins: [
+            typescript({ tsconfig: './tsconfig.json', declaration: false }),
             dts()
         ],
     },

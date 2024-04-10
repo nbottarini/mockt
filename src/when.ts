@@ -1,5 +1,5 @@
 import { Mocker } from './Mocker'
-import { MethodStubBuilder } from '@/methodStubs/MethodStubBuilder'
+import { MethodStubBuilder } from './methodStubs/MethodStubBuilder'
 
 export function when<T>(instance: T): MockStubbing<T> {
     const mocker = (instance as any).__mocktMocker as Mocker

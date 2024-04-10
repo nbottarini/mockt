@@ -1,4 +1,4 @@
-import { Mocker } from './Mocker'
+import { Mocker } from '@/Mocker'
 
 export function resetCalls(...instances: any) {
     instances.forEach(instance => {

@@ -1,4 +1,4 @@
-import { isObject } from './isObject'
+import { isObject } from '@/lib/isObject'
 
 export class ObjectInspector {
     private excludedPropertyNames = ['hasOwnProperty']

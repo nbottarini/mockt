@@ -1,4 +1,4 @@
-import { Matcher } from './Matcher'
+import { Matcher } from '@/matchers/Matcher'
 
 export class ClassMatcher<T> extends Matcher<T> {
     constructor(private expectedClass: abstract new (...args: any[]) => T) {

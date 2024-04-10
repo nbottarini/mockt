@@ -1,5 +1,5 @@
 import { SimpleInvocationVerifier } from '@/verification/simple/verifiers/SimpleInvocationVerifier'
-import { Invocation } from '../../Invocation'
+import { Invocation } from '@/verification/Invocation'
 
 export class OnceVerifier extends SimpleInvocationVerifier {
     protected isValid(invocations: Invocation[]): boolean {

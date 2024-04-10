@@ -1,6 +1,6 @@
 import { Matcher } from '@/matchers/Matcher'
-import { MethodStub } from './MethodStub'
-import { ReturnValueMethodStub } from './ReturnValueMethodStub'
+import { MethodStub } from '@/methodStubs/MethodStub'
+import { ReturnValueMethodStub } from '@/methodStubs/ReturnValueMethodStub'
 import { ThrowErrorMethodStub } from '@/methodStubs/ThrowErrorMethodStub'
 import { ResolvePromiseMethodStub } from '@/methodStubs/ResolvePromiseMethodStub'
 import { RejectPromiseMethodStub } from '@/methodStubs/RejectPromiseMethodStub'
