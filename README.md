@@ -2,7 +2,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CI Status](https://github.com/nbottarini/mockt/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/nbottarini/mockt/actions)
 
-# Mockt
+<p align="center">
+  <img alt="Mockt" src="docs/logo.png" width="80%">
+</p>
 
 <!-- A spacer -->
 <p>&nbsp;</p>
