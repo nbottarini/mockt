@@ -8,8 +8,19 @@ it('returns specified value', () => {
     expect(actual).toEqual(5)
 })
 
-it('returns multiple values', () => {
+it('returns multiple values with single call', () => {
     when(myClassMock).method().returns(5, 6)
+
+    const actual1 = myClassMock.method()
+    const actual2 = myClassMock.method()
+
+    expect(actual1).toEqual(5)
+    expect(actual2).toEqual(6)
+})
+
+it('returns multiple values with multiple calls', () => {
+    when(myClassMock).method().returns(5)
+    when(myClassMock).method().returns(6)
 
     const actual1 = myClassMock.method()
     const actual2 = myClassMock.method()

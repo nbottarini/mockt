@@ -50,6 +50,5 @@ export type MultipleInvocationVerificatorType<T> = {
     setProperty(name: keyof T, value: any): MultipleInvocationVerificatorType<T>
     called(): void
     calledInOrder(): void
-    calledInSequence(): void
     never(): void
 }

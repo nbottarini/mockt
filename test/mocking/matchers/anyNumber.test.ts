@@ -25,9 +25,11 @@ it('doesn\'t match when value is not a number', () => {
 
     const actual1 = myClassMock.method(new MyClass())
     const actual2 = myClassMock.method('some string')
+    const actual3 = myClassMock.method('3')
 
     expect(actual1).toBe(undefined)
     expect(actual2).toBe(undefined)
+    expect(actual3).toBe(undefined)
 })
 
 it('doesn\'t match when value is undefined', () => {
