@@ -786,3 +786,7 @@ reset(calculator)
 
 calculator.sum(1, 2) // returns undefined
 ```
+
+## Credits
+
+Thanks to all the contributors of [ts-mockito](https://github.com/NagRock/ts-mockito) and [Mockk](https://mockk.io/).
