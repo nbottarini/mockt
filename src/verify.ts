@@ -52,3 +52,5 @@ export type MultipleInvocationVerificatorType<T> = {
     calledInOrder(): void
     never(): void
 }
+
+export { MultipleInvocationsVerificator }
