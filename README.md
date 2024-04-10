@@ -1,15 +1,15 @@
-[![npm](https://img.shields.io/npm/v/mockt.svg)](https://www.npmjs.com/package/mockt)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![CI Status](https://github.com/nbottarini/mockt/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/nbottarini/mockt/actions)
-
 <p align="center">
-  <img alt="Mockt" src="docs/logo.png" width="80%">
+  <img alt="Mockt" src="docs/logo_readme.png" width="80%">
 </p>
 
 <!-- A spacer -->
 <p>&nbsp;</p>
 
 <h2 align="center">Joyful mocking library for Typescript and Javascript</h2>
+
+[![npm](https://img.shields.io/npm/v/mockt.svg)](https://www.npmjs.com/package/mockt)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI Status](https://github.com/nbottarini/mockt/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/nbottarini/mockt/actions)
 
 ## Getting Started
 
