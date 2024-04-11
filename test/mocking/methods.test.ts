@@ -103,8 +103,8 @@ describe('mocking class method', () => {
     })
 
     describe('arrow method', () => {
-        it('when not-stubbed throws TypeError', () => {
-            expect(() => myClassMock.arrowMethod(2)).toThrow(TypeError)
+        it('doesn\'t fail when not-stubbed', () => {
+            expect(() => myClassMock.arrowMethod(2)).not.toThrow()
         })
 
         it('when stubbed returns configured value', () => {
@@ -134,8 +134,8 @@ describe('mocking class method', () => {
         })
     })
 
-    it('calling non-existent method throws TypeError', () => {
-        expect(() => myClassMock['non-existent']()).toThrow(TypeError)
+    it('doesn\'t fail when calling non-existent method', () => {
+        expect(() => myClassMock['non-existent']()).not.toThrow()
     })
 
     beforeEach(() => {

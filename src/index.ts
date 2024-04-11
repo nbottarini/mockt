@@ -29,3 +29,4 @@ export * from '@/matchers/RangeMatcher'
 
 export * from '@/methodStubs/MethodStubBuilder'
 export * from '@/verification/MultipleInvocationsVerificator'
+export * from '@/UnknownResponse'

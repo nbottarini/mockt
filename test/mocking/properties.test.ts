@@ -1,12 +1,13 @@
 import { mockt } from '@/mockt'
 import { when } from '@/when'
+import { UnknownResponse } from '../../src'
 
 describe('mocking property', () => {
     describe('without getter', () => {
-        it('when not-stubbed returns undefined', () => {
+        it('when not-stubbed returns unknown response', () => {
             const actual = myClassMock.simpleProperty
 
-            expect(actual).toBe(undefined)
+            expect(actual).toBeInstanceOf(UnknownResponse)
         })
 
         it('when stubbed returns configured value', () => {
@@ -35,8 +36,8 @@ describe('mocking property', () => {
     })
 
     describe('function property', () => {
-        it('when not-stubbed throws TypeError', () => {
-            expect(() =>  myClassMock.functionProperty()).toThrow(TypeError)
+        it('doesn\'t fail when not-stubbed', () => {
+            expect(() => myClassMock.functionProperty()).not.toThrow()
         })
 
         it('when stubbed returns configured value', () => {
@@ -49,8 +50,8 @@ describe('mocking property', () => {
     })
 
     describe('lambda property', () => {
-        it('when not-stubbed throws TypeError', () => {
-            expect(() =>  myClassMock.lambdaProperty(2)).toThrow(TypeError)
+        it('doesn\'t fail when not-stubbed', () => {
+            expect(() =>  myClassMock.lambdaProperty(2)).not.toThrow()
         })
 
         it('when stubbed returns configured value', () => {

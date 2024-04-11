@@ -4,8 +4,8 @@ import each from 'jest-each'
 
 describe('mocking interface method', () => {
     describe('without params', () => {
-        it('when not-stubbed throws TypeError', () => {
-            expect(() =>  interfaceMock.methodThatReturns1()).toThrow(TypeError)
+        it('doesn\'t fail when not-stubbed', () => {
+            expect(() =>  interfaceMock.methodThatReturns1()).not.toThrow()
         })
 
         it('when stubbed returns configured value', () => {
@@ -84,8 +84,8 @@ describe('mocking interface method', () => {
     })
 
     describe('arrow method', () => {
-        it('when not-stubbed throws TypeError', () => {
-            expect(() =>  interfaceMock.arrowMethod(2)).toThrow(TypeError)
+        it('doesn\'t fail when not-stubbed', () => {
+            expect(() =>  interfaceMock.arrowMethod(2)).not.toThrow()
         })
 
         it('when stubbed returns configured value', () => {
@@ -115,8 +115,8 @@ describe('mocking interface method', () => {
         })
     })
 
-    it('calling non-existent method throws TypeError', () => {
-        expect(() => interfaceMock['non-existent']()).toThrow(TypeError)
+    it('doesn\'t fail when calling non-existent', () => {
+        expect(() => interfaceMock['non-existent']()).not.toThrow()
     })
 
     beforeEach(() => {

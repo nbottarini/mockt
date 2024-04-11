@@ -27,8 +27,8 @@ describe('mocking abstract class', () => {
     })
 
     describe('abstract method', () => {
-        it('when not-stubbed throws TypeError', () => {
-            expect(() =>  abstractClassMock.abstractMethod(2)).toThrow(TypeError)
+        it('doesn\'t fail when not-stubbed', () => {
+            expect(() =>  abstractClassMock.abstractMethod(2)).not.toThrow()
         })
 
         it('when stubbed returns configured value if called with matching param value', () => {
