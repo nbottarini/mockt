@@ -27,8 +27,9 @@ export class Mocker {
         const instance = new Proxy(this.instance, {
             get: (target: any, name: PropertyKey) => {
                 if (name in target) return target[name]
-                this.invocationTracker.add(name.toString(), [])
-                return new UnknownResponse()
+                let propertyName = name.toString()
+                this.invocationTracker.add(propertyName, [])
+                return new UnknownResponse(propertyName, this.invocationTracker)
             },
             set: (target: any, name: PropertyKey, newValue: any) => {
                 if (name !== this.mocktProperty) this.invocationTracker.add('setProperty', [name, newValue])

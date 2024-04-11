@@ -53,11 +53,19 @@ it('property set fails if not assigned', () => {
     )
 })
 
+it('verify not stubbed method arguments', () => {
+    myInterfaceMock.methodThatReturnsParam(3)
+
+    verify(myInterfaceMock).methodThatReturnsParam(3)
+})
+
 beforeEach(() => {
     myClassMock = mockt(MyClass)
+    myInterfaceMock = mockt<MyInterface>()
 })
 
 let myClassMock: MyClass
+let myInterfaceMock: MyInterface
 
 class MyClass {
     someProperty: string = 'Hello'
@@ -69,4 +77,8 @@ class MyClass {
     methodThatReturnsParam(param: number): number {
         return param
     }
+}
+
+interface MyInterface {
+    methodThatReturnsParam(param: number): number
 }
