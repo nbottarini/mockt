@@ -54,7 +54,7 @@ export class MethodStubBuilder<R, ResolveType = void> extends Function {
     }
 
     // When is a function property we build the stub when is called as a function
-    __call(...args: any[]): MethodStubBuilder<any> {
+    private __call(...args: any[]): MethodStubBuilder<any> {
         this.defineMockMethodStub(this.methodName, true)
         return this.mock[this.methodName](...args)
     }

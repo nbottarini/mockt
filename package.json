@@ -1,6 +1,6 @@
 {
   "name": "mockt",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Joyful mocking library for Typescript and Javascript",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
