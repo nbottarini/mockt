@@ -69,6 +69,7 @@ verify(calculator).sum(any(), 8)
     - [Throw error](#throw-error)
     - [Promise resolve](#promise-resolve)
     - [Promise reject](#promise-reject)
+    - [Chained answers](#chained-answers)
   - [Matchers](#matchers)
     - [Equals](#equals)
       - [Deep equality and type conversion](#deep-equality-and-type-conversion)
@@ -281,6 +282,22 @@ const apiClient = mockt(ApiClient)
 when(apiClient).getUser().rejects(new Error('Some error'))
 
 await apiClient.getUser() // throws Error('Some error')
+```
+
+#### Chained answers
+
+```typescript
+const calculator = mockt(Calculator)
+when(calculator).sum(2, 3)
+        .returns(5)
+        .returns(6)
+        .calls(() => 7)
+        .throws(new Error('Some error'))
+
+calculator.sum(2, 3) // returns 5
+calculator.sum(2, 3) // returns 6
+calculator.sum(2, 3) // returns 7
+calculator.sum(2, 3) // throws Error('Some error')
 ```
 
 ### Matchers
