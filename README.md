@@ -105,8 +105,8 @@ verify(calculator).sum(any(), 8)
     - [Verify multiple methods never called](#verify-multiple-methods-never-called)
     - [Verify multiple methods called in expected order](#verify-multiple-methods-called-in-expected-order)
   - [Capture arguments](#capture-arguments)
-    - [First call](#first-call)
     - [Last call](#last-call)
+    - [First call](#first-call)
     - [All calls](#all-calls)
     - [Setters](#setters)
   - [Spies](#spies)
@@ -705,26 +705,6 @@ verifyMulti(calculator)
 
 ### Capture arguments
 
-#### First call
-
-```typescript
-const calculator = mockt(Calculator)
-
-calculator.sum(1, 2)
-calculator.sum(1, 3)
-
-const [first, second] = capture(calculator).sum // returns [1, 2]
-```
-
-```typescript
-const calculator = mockt(Calculator)
-
-calculator.sum(1, 2)
-calculator.sum(1, 3)
-
-const [first, second] = captureFirst(calculator).sum // returns [1, 2]
-```
-
 #### Last call
 
 ```typescript
@@ -733,7 +713,27 @@ const calculator = mockt(Calculator)
 calculator.sum(1, 2)
 calculator.sum(1, 3)
 
+const [first, second] = capture(calculator).sum // returns [1, 3]
+```
+
+```typescript
+const calculator = mockt(Calculator)
+
+calculator.sum(1, 2)
+calculator.sum(1, 3)
+
 const [first, second] = captureLast(calculator).sum // returns [1, 3]
+```
+
+#### First call
+
+```typescript
+const calculator = mockt(Calculator)
+
+calculator.sum(1, 2)
+calculator.sum(1, 3)
+
+const [first, second] = captureFirst(calculator).sum // returns [1, 2]
 ```
 
 #### All calls

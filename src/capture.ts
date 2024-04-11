@@ -2,7 +2,7 @@ import { getInvocationTracker } from '@/lib/getInvocationTracker'
 import { Invocation } from '@/verification/Invocation'
 
 export function capture<T extends object>(instance: T): CaptureType<T> {
-    return captureFirst(instance)
+    return captureLast(instance)
 }
 
 export function captureFirst<T extends object>(instance: T): CaptureType<T> {
