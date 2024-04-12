@@ -16,7 +16,7 @@ export type MethodStubBuilderType<R, ResolveType = void> = {
 
 export type BehaviorSetter<R> =
     // Square Brackets because of distributive conditional types: https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types
-    [R] extends Promise<[infer ResolveType]> ? MethodStubBuilderType<R, ResolveType> :
+    [R] extends [Promise<infer ResolveType>] ? MethodStubBuilderType<R, ResolveType> :
     MethodStubBuilderType<R>
 
 export type FunctionToChangeBehavior<A extends any[], R> = (...args: A) => BehaviorSetter<R>
