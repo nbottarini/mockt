@@ -14,15 +14,9 @@ export class SimpleInvocationVerificator {
 
     private methodVerifier(name: string): any {
         return (...args: any[]) => {
-            let argsToVerify = args
-            let nameToVerify = name
-            if (name === 'getProperty') {
-                argsToVerify = argsToVerify.slice(1)
-                nameToVerify = args[0]
-            }
-            const matchers = argsToVerify.map(it => it instanceof Matcher ? it : eq(it))
-            const invocations = this.invocationTracker.getMatchingInvocations(nameToVerify, matchers)
-            this.verifier.verify(this.invocationTracker, nameToVerify, matchers, invocations)
+            const matchers = args.map(it => it instanceof Matcher ? it : eq(it))
+            const invocations = this.invocationTracker.getMatchingInvocations(name, matchers)
+            this.verifier.verify(this.invocationTracker, name, matchers, invocations)
         }
     }
 }

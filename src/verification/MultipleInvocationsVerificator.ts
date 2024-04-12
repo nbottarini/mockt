@@ -82,14 +82,8 @@ export class MultipleInvocationsVerificator {
 
     private methodVerifier(name: string): any {
         return (...args: any[]) => {
-            let argsToVerify = args
-            let nameToVerify = name
-            if (name === 'getProperty') {
-                argsToVerify = argsToVerify.slice(1)
-                nameToVerify = args[0]
-            }
-            const matchers = argsToVerify.map(it => it instanceof Matcher ? it : eq(it))
-            this.invocationsToVerify.push(new InvocationToVerify(nameToVerify, matchers))
+            const matchers = args.map(it => it instanceof Matcher ? it : eq(it))
+            this.invocationsToVerify.push(new InvocationToVerify(name, matchers))
             return this.proxy
         }
     }

@@ -31,14 +31,26 @@ it('fails if called multiple times', () => {
     )
 })
 
+it('with interfaces', () => {
+    myInterface.method()
+
+    verifyOnce(myInterface).method()
+})
+
 beforeEach(() => {
     myClassMock = mockt(MyClass)
+    myInterface = mockt<MyInterface>()
 })
 
 let myClassMock: MyClass
+let myInterface: MyInterface
 
 class MyClass {
     methodThatReturnsParam(param: number): number {
         return param
     }
+}
+
+interface MyInterface {
+    method(): number
 }

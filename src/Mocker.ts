@@ -28,7 +28,7 @@ export class Mocker {
             get: (target: any, name: PropertyKey) => {
                 if (name in target) return target[name]
                 let propertyName = name.toString()
-                this.invocationTracker.add(propertyName, [])
+                this.invocationTracker.add('getProperty', [propertyName])
                 return new UnknownResponse(propertyName, this.invocationTracker)
             },
             set: (target: any, name: PropertyKey, newValue: any) => {
@@ -113,7 +113,11 @@ export class Mocker {
         if (Object.hasOwn(this.instance, propertyName) || propertyName === this.mocktProperty) return
 
         Object.defineProperty(this.instance, propertyName, {
-            get: this.createExecutor(propertyName),
+            get: () => {
+                this.invocationTracker.add('getProperty', [propertyName])
+                const methodStub = this.findMethodStub(propertyName, [])
+                return methodStub.execute([])
+            },
             set: (value: any) => {
                 this.invocationTracker.add('setProperty', [propertyName, value])
             },
@@ -125,17 +129,13 @@ export class Mocker {
         if (force) delete this.instance[methodName]
         if (Object.hasOwn(this.instance, methodName)) return
 
-        this.instance[methodName] = this.createExecutor(methodName)
-    }
-
-    private createExecutor(name: string): (...args: any[]) => any {
-        return (...args: any[]) => {
-            this.invocationTracker.add(name, args)
-            const methodStub = this.findMethodStub(name, args)
+        this.instance[methodName] = (...args: any[]) => {
+            this.invocationTracker.add(methodName, args)
+            const methodStub = this.findMethodStub(methodName, args)
             return methodStub.execute(args)
         }
     }
-
+    
     private findMethodStub(name: string, args: any[]): MethodStub<any> {
         if (this.methodStubs[name]) {
             const stubs = this.methodStubs[name].filter(stub => stub.isEnabled && stub.matches(args))

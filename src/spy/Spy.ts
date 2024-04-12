@@ -19,7 +19,7 @@ export class Spy<T extends object> {
                         return property(...args)
                     }
                 } else {
-                    this.invocationTracker.add(name.toString(), [])
+                    this.invocationTracker.add('getProperty', [name.toString()])
                 }
                 return property
             },

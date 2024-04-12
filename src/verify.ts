@@ -37,7 +37,7 @@ export function verifyMulti<T>(instance: T): MultipleInvocationVerificatorType<T
 }
 
 export type SimpleInvocationVerificatorType<T> = {
-    [K in keyof T]: T[K] extends (((...args: infer A) => any)|Function) ? (...args: A) => void : void
+    [K in keyof T]: T[K] extends (((...args: infer A) => any)|Function) ? (...args: A) => void : Function
 } & {
     getProperty(name: keyof T): void
     setProperty(name: keyof T, value: any): void

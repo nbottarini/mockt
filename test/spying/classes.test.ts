@@ -1,5 +1,4 @@
-import { spy } from '../../src/spy'
-import { any, eq, neq, verify } from '../../src'
+import { any, eq, neq, spy, verify } from '../../src'
 
 it('method without params success if called', () => {
     const value = mySpy.methodThatReturns1()
@@ -40,7 +39,7 @@ it('property get success if read', () => {
 
 it('property get fails if not read', () => {
     expect(() => verify(mySpy).getProperty('someProperty')).toThrow(
-        `Expected "someProperty()" to be called but has never been called.`
+        `Expected "getProperty(eq(someProperty))" to be called but has never been called.`
     )
 })
 

@@ -37,7 +37,7 @@ it('property get success if read', () => {
 
 it('property get fails if not read', () => {
     expect(() => verify(myClassMock).getProperty('someProperty')).toThrow(
-        `Expected "someProperty()" to be called but has never been called.`
+        `Expected "getProperty(eq(someProperty))" to be called but has never been called.`
     )
 })
 
