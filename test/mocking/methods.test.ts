@@ -169,8 +169,4 @@ class MyClass extends ParentClass {
     }
 
     arrowMethod = (a: number) => a
-
-    aMethodThatReturnsBoolean(a: boolean, b: number, c: boolean): boolean {
-        return false
-    }
 }

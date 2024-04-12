@@ -15,9 +15,8 @@ export type MethodStubBuilderType<R, ResolveType = void> = {
 }
 
 export type BehaviorSetter<R> =
-    // Because of typescript boolean expansion: https://github.com/microsoft/TypeScript/issues/30029
-    R extends boolean ? MethodStubBuilderType<R> :
-    R extends Promise<infer ResolveType> ? MethodStubBuilderType<R, ResolveType> :
+    // Square Brackets because of distributive conditional types: https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types
+    [R] extends Promise<[infer ResolveType]> ? MethodStubBuilderType<R, ResolveType> :
     MethodStubBuilderType<R>
 
 export type FunctionToChangeBehavior<A extends any[], R> = (...args: A) => BehaviorSetter<R>
