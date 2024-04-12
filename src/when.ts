@@ -14,7 +14,11 @@ export type MethodStubBuilderType<R, ResolveType = void> = {
     calls(func: (...args: any[]) => R): MethodStubBuilderType<R,  ResolveType>
 }
 
-export type BehaviorSetter<R> = R extends Promise<infer ResolveType> ? MethodStubBuilderType<R, ResolveType> : MethodStubBuilderType<R>
+export type BehaviorSetter<R> =
+    // Because of typescript boolean expansion: https://github.com/microsoft/TypeScript/issues/30029
+    R extends boolean ? MethodStubBuilderType<R> :
+    R extends Promise<infer ResolveType> ? MethodStubBuilderType<R, ResolveType> :
+    MethodStubBuilderType<R>
 
 export type FunctionToChangeBehavior<A extends any[], R> = (...args: A) => BehaviorSetter<R>
 
