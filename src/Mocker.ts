@@ -98,9 +98,12 @@ export class Mocker {
         }
     }
 
-    private addMethodStub<R>(stub: MethodStub<R>) {
+    private addMethodStub<R>(stub: MethodStub<R>, replaceExisting: boolean = true) {
         if (!this.methodStubs[stub.name]) {
             this.methodStubs[stub.name] = []
+        }
+        if (replaceExisting) {
+            this.methodStubs[stub.name] = this.methodStubs[stub.name].filter(it => !it.hasSameMatchers(stub))
         }
         this.methodStubs[stub.name].push(stub)
     }

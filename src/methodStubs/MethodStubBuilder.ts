@@ -7,11 +7,13 @@ import { RejectPromiseMethodStub } from '@/methodStubs/RejectPromiseMethodStub'
 import { CallFunctionMethodStub } from '@/methodStubs/CallFunctionMethodStub'
 
 export class MethodStubBuilder<R, ResolveType = void> extends Function {
+    private isFirstStub = true
+
     constructor(
         private mock: any,
         private methodName: string,
         private matchers: Matcher<any>[],
-        private addMethodStub: (stub: MethodStub<R>) => void,
+        private addMethodStub: (stub: MethodStub<R>, replaceExisting?: boolean) => void,
         private defineMockMethodStub: (methodName: string, force?: boolean) => void,
     ) {
         super()
@@ -22,34 +24,40 @@ export class MethodStubBuilder<R, ResolveType = void> extends Function {
         })
     }
 
+    private doAddMethodStub(stub: MethodStub<R>) {
+        const replaceExisting = this.isFirstStub
+        this.addMethodStub(stub, replaceExisting)
+        this.isFirstStub = false
+    }
+
     returns(param: R = undefined, ...rest: R[]): this {
-        this.addMethodStub(new ReturnValueMethodStub(this.methodName, this.matchers, param))
+        this.doAddMethodStub(new ReturnValueMethodStub(this.methodName, this.matchers, param))
         rest.forEach(value => {
-            this.addMethodStub(new ReturnValueMethodStub(this.methodName, this.matchers, value))
+            this.doAddMethodStub(new ReturnValueMethodStub(this.methodName, this.matchers, value))
         })
         return this
     }
 
     throws(error: Error = new Error('Some error')): this {
-        this.addMethodStub(new ThrowErrorMethodStub(this.methodName, this.matchers, error))
+        this.doAddMethodStub(new ThrowErrorMethodStub(this.methodName, this.matchers, error))
         return this
     }
 
     resolves(param: ResolveType = undefined, ...rest: ResolveType[]): this {
-        this.addMethodStub(new ResolvePromiseMethodStub(this.methodName, this.matchers, param))
+        this.doAddMethodStub(new ResolvePromiseMethodStub(this.methodName, this.matchers, param))
         rest.forEach(value => {
-            this.addMethodStub(new ResolvePromiseMethodStub(this.methodName, this.matchers, value))
+            this.doAddMethodStub(new ResolvePromiseMethodStub(this.methodName, this.matchers, value))
         })
         return this
     }
 
     rejects(error: Error = new Error('Some error')): this {
-        this.addMethodStub(new RejectPromiseMethodStub(this.methodName, this.matchers, error))
+        this.doAddMethodStub(new RejectPromiseMethodStub(this.methodName, this.matchers, error))
         return this
     }
 
     calls(func: (...args: any[]) => R): this {
-        this.addMethodStub(new CallFunctionMethodStub(this.methodName, this.matchers, func))
+        this.doAddMethodStub(new CallFunctionMethodStub(this.methodName, this.matchers, func))
         return this
     }
 

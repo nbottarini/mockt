@@ -41,7 +41,7 @@ verify(calculator).sum(any(), 8)
 - Abstract class mocks
 - Interface mocks
 - Generics support
-- Flexible stubbing with multiple returns, custom function call, errors and promises.
+- Flexible stubbing with multiple returns, custom function call, errors, promises and stub overriding.
 - Properties stubbing
 - Spy on real objects
 - Argument Capturing
@@ -233,17 +233,17 @@ when(calculator).sum(2, 3).returns(5, 6, 7)
 calculator.sum(2, 3) // returns 5
 calculator.sum(2, 3) // returns 6
 calculator.sum(2, 3) // returns 7
+calculator.sum(2, 3) // returns 7
 ```
 
+#### Stub overriding
 ```typescript
 const calculator = mockt(Calculator)
 when(calculator).sum(2, 3).returns(5)
 when(calculator).sum(2, 3).returns(6)
-when(calculator).sum(2, 3).returns(7)
 
-calculator.sum(2, 3) // returns 5
 calculator.sum(2, 3) // returns 6
-calculator.sum(2, 3) // returns 7
+calculator.sum(2, 3) // returns 6
 ```
 
 #### Function call
