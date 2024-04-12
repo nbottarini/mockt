@@ -1,5 +1,13 @@
 import { mockt, when } from '../../../src'
 
+it('resolves undefined when no promise specified', async () => {
+    when(myClassMock).method().resolves()
+
+    const actual = await myClassMock.method()
+
+    expect(actual).toEqual(undefined)
+})
+
 it('resolves specified promise', async () => {
     when(myClassMock).method().resolves(5)
 

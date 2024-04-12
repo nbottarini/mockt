@@ -22,7 +22,7 @@ export class MethodStubBuilder<R, ResolveType = void> extends Function {
         })
     }
 
-    returns(param: R, ...rest: R[]): this {
+    returns(param: R = undefined, ...rest: R[]): this {
         this.addMethodStub(new ReturnValueMethodStub(this.methodName, this.matchers, param))
         rest.forEach(value => {
             this.addMethodStub(new ReturnValueMethodStub(this.methodName, this.matchers, value))
@@ -30,12 +30,12 @@ export class MethodStubBuilder<R, ResolveType = void> extends Function {
         return this
     }
 
-    throws(error: Error): this {
+    throws(error: Error = new Error('Some error')): this {
         this.addMethodStub(new ThrowErrorMethodStub(this.methodName, this.matchers, error))
         return this
     }
 
-    resolves(param: ResolveType, ...rest: ResolveType[]): this {
+    resolves(param: ResolveType = undefined, ...rest: ResolveType[]): this {
         this.addMethodStub(new ResolvePromiseMethodStub(this.methodName, this.matchers, param))
         rest.forEach(value => {
             this.addMethodStub(new ResolvePromiseMethodStub(this.methodName, this.matchers, value))
@@ -43,7 +43,7 @@ export class MethodStubBuilder<R, ResolveType = void> extends Function {
         return this
     }
 
-    rejects(error: Error): this {
+    rejects(error: Error = new Error('Some error')): this {
         this.addMethodStub(new RejectPromiseMethodStub(this.methodName, this.matchers, error))
         return this
     }

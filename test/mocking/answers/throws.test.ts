@@ -6,6 +6,12 @@ it('throws specified error when called', () => {
     expect(() => myClassMock.method()).toThrow('Some error')
 })
 
+it('throws some error when no error is given', () => {
+    when(myClassMock).method().throws()
+
+    expect(() => myClassMock.method()).toThrow(Error)
+})
+
 beforeEach(() => {
     myClassMock = mockt(MyClass)
 })

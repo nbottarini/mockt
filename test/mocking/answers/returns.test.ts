@@ -1,5 +1,13 @@
 import { mockt, when } from '../../../src'
 
+it('returns undefined when no value is specified', () => {
+    when(myClassMock).method().returns()
+
+    const actual = myClassMock.method()
+
+    expect(actual).toEqual(undefined)
+})
+
 it('returns specified value', () => {
     when(myClassMock).method().returns(5)
 

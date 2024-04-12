@@ -6,10 +6,10 @@ export function when<T>(instance: T): MockStubbing<T> {
 }
 
 export type MethodStubBuilderType<R, ResolveType = void> = {
-    returns(param: R, ...rest: R[]): MethodStubBuilderType<R,  ResolveType>
-    throws(error: Error): MethodStubBuilderType<R,  ResolveType>
-    resolves(param: ResolveType, ...rest: ResolveType[]): MethodStubBuilderType<R,  ResolveType>
-    rejects(error: Error): MethodStubBuilderType<R,  ResolveType>
+    returns(param?: R, ...rest: R[]): MethodStubBuilderType<R,  ResolveType>
+    throws(error?: Error): MethodStubBuilderType<R,  ResolveType>
+    resolves(param?: ResolveType, ...rest: ResolveType[]): MethodStubBuilderType<R,  ResolveType>
+    rejects(error?: Error): MethodStubBuilderType<R,  ResolveType>
     calls(func: (...args: any[]) => R): MethodStubBuilderType<R,  ResolveType>
 }
 
