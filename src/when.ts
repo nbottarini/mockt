@@ -2,6 +2,7 @@ import { Mocker } from './Mocker'
 
 export function when<T>(instance: T): MockStubbing<T> {
     const mocker = (instance as any).__mocktMocker as Mocker
+    if (!mocker) throw new Error('Given instance is not a mock')
     return mocker.mock
 }
 
