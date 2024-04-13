@@ -92,13 +92,13 @@ describe('mocking class method', () => {
             expect(actual).toBe(6)
         })
 
-        it('stubs match by definition order', () => {
+        it('stubs match by last definition order', () => {
             when(myClassMock).methodWithOptionalParam(2, 9).returns(99)
             when(myClassMock).methodWithOptionalParam(2).returns(6)
 
             const actual = myClassMock.methodWithOptionalParam(2, 9)
 
-            expect(actual).toBe(99)
+            expect(actual).toBe(6)
         })
     })
 

@@ -7,13 +7,14 @@ import { eq } from '@/matchers/EqualsMatcher'
 import { NullMethodStub } from '@/methodStubs/NullMethodStub'
 import { InvocationTracker } from '@/lib/InvocationTracker'
 import { UnknownResponse } from '@/UnknownResponse'
+import { MultiAnswerMethodStub } from '@/methodStubs/MultiAnswerMethodStub'
 
 export class Mocker {
     private internalMock: any = {}
     readonly mock: any
     readonly instance: any = {}
     private objectInspector = new ObjectInspector()
-    private methodStubs: Record<string, MethodStub<any>[]> = {}
+    private methodStubs: Record<string, MultiAnswerMethodStub<any>[]> = {}
     readonly invocationTracker = new InvocationTracker()
     private mocktProperty = '__mocktMocker'
 
@@ -98,14 +99,17 @@ export class Mocker {
         }
     }
 
-    private addMethodStub<R>(stub: MethodStub<R>, replaceExisting: boolean = true) {
-        if (!this.methodStubs[stub.name]) {
-            this.methodStubs[stub.name] = []
+    private addMethodStub<R>(stub: MethodStub<R>, appendAnswer: boolean = false) {
+        if (!this.methodStubs[stub.name]) this.methodStubs[stub.name] = []
+
+        if (appendAnswer) {
+            const existingStub = this.methodStubs[stub.name].find(it => it.hasSameMatchers(stub))
+            if (existingStub) {
+                existingStub.append(stub)
+                return
+            }
         }
-        if (replaceExisting) {
-            this.methodStubs[stub.name] = this.methodStubs[stub.name].filter(it => !it.hasSameMatchers(stub))
-        }
-        this.methodStubs[stub.name].push(stub)
+        this.methodStubs[stub.name].push(MultiAnswerMethodStub.from(stub))
     }
 
     private defineInstancePropertyExecutor(propertyName: string, force: boolean = false) {
@@ -138,15 +142,8 @@ export class Mocker {
     
     private findMethodStub(name: string, args: any[]): MethodStub<any> {
         if (this.methodStubs[name]) {
-            const stubs = this.methodStubs[name].filter(stub => stub.isEnabled && stub.matches(args))
-            if (stubs.length === 1) {
-                return stubs[0]
-            } else if (stubs.length > 1) {
-                // Multiple Matches, disable result for next call
-                const stub = stubs[0]
-                stub.disable()
-                return stub
-            }
+            const stub = this.methodStubs[name].findLast(stub => stub.matches(args))
+            if (stub) return stub
         }
 
         return new NullMethodStub(name)
@@ -154,7 +151,7 @@ export class Mocker {
 
     resetCalls() {
         for (let methodName of Object.keys(this.methodStubs)) {
-            this.methodStubs[methodName].forEach(stub => stub.enable())
+            this.methodStubs[methodName].forEach(stub => stub.reset())
         }
         this.invocationTracker.reset()
     }

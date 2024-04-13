@@ -58,6 +58,19 @@ it('don\'t override stub with different matchers', () => {
     expect(actual2).toEqual(6)
 })
 
+it('return next result from last specified stub', () => {
+    when(myClassMock).methodWithParams(any(), any()).returns(5, 6)
+    when(myClassMock).methodWithParams(any(), 3).returns(7)
+
+    const actual1 = myClassMock.methodWithParams('a', 2)
+    const actual2 = myClassMock.methodWithParams('a', 3)
+    const actual3 = myClassMock.methodWithParams('a', 4)
+
+    expect(actual1).toEqual(5)
+    expect(actual2).toEqual(7)
+    expect(actual3).toEqual(6)
+})
+
 beforeEach(() => {
     myClassMock = mockt(MyClass)
 })

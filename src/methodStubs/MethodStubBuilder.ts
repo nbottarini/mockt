@@ -13,7 +13,7 @@ export class MethodStubBuilder<R, ResolveType = void> extends Function {
         private mock: any,
         private methodName: string,
         private matchers: Matcher<any>[],
-        private addMethodStub: (stub: MethodStub<R>, replaceExisting?: boolean) => void,
+        private addMethodStub: (stub: MethodStub<R>, appendAnswer?: boolean) => void,
         private defineMockMethodStub: (methodName: string, force?: boolean) => void,
     ) {
         super()
@@ -25,8 +25,8 @@ export class MethodStubBuilder<R, ResolveType = void> extends Function {
     }
 
     private doAddMethodStub(stub: MethodStub<R>) {
-        const replaceExisting = this.isFirstStub
-        this.addMethodStub(stub, replaceExisting)
+        const appendAnswer = !this.isFirstStub
+        this.addMethodStub(stub, appendAnswer)
         this.isFirstStub = false
     }
 
