@@ -237,6 +237,7 @@ calculator.sum(2, 3) // returns 7
 ```
 
 #### Stub overriding
+
 ```typescript
 const calculator = mockt(Calculator)
 when(calculator).sum(2, 3).returns(5)
@@ -244,6 +245,16 @@ when(calculator).sum(2, 3).returns(6)
 
 calculator.sum(2, 3) // returns 6
 calculator.sum(2, 3) // returns 6
+```
+
+```typescript
+const calculator = mockt(Calculator)
+when(calculator).sum(any(), any()).returns(5, 6)
+when(calculator).sum(2, 3).returns(7)
+
+calculator.sum(2, 3) // returns 7
+calculator.sum(2, 4) // returns 5
+calculator.sum(2, 5) // returns 6
 ```
 
 #### Function call
