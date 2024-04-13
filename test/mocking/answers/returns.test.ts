@@ -38,13 +38,15 @@ it('returns last value when all returns are consumed', () => {
 
 it('overrides stub with multiple calls', () => {
     when(myClassMock).method().returns(5)
-    when(myClassMock).method().returns(6)
+    when(myClassMock).method().returns(6, 7)
 
     const actual1 = myClassMock.method()
     const actual2 = myClassMock.method()
+    const actual3 = myClassMock.method()
 
     expect(actual1).toEqual(6)
-    expect(actual2).toEqual(6)
+    expect(actual2).toEqual(7)
+    expect(actual3).toEqual(7)
 })
 
 it('don\'t override stub with different matchers', () => {

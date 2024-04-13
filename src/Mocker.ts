@@ -103,7 +103,7 @@ export class Mocker {
         if (!this.methodStubs[stub.name]) this.methodStubs[stub.name] = []
 
         if (appendAnswer) {
-            const existingStub = this.methodStubs[stub.name].find(it => it.hasSameMatchers(stub))
+            const existingStub = this.methodStubs[stub.name].findLast(it => it.hasSameMatchers(stub))
             if (existingStub) {
                 existingStub.append(stub)
                 return

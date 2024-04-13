@@ -11,9 +11,9 @@ export class MultiAnswerMethodStub<R> extends MethodStub<R> {
     }
 
     execute(args: any[]): R {
-        const result = this.answers[this.answerIndex].execute(args)
+        const currentIndex = this.answerIndex
         this.answerIndex = Math.min(this.answerIndex + 1, this.answers.length - 1)
-        return result
+        return this.answers[currentIndex].execute(args)
     }
 
     append(answer: MethodStub<R>) {

@@ -36,6 +36,24 @@ it('new stub overrides previous chain', () => {
     expect(actual4).toEqual(3)
 })
 
+it('chain with errors don\'t affect next answers', () => {
+    when(myClassMock).method()
+        .throws(new Error('Some error'))
+        .returns(6)
+
+    expect(() => myClassMock.method()).toThrow('Some error')
+    expect(myClassMock.method()).toEqual(6)
+})
+
+it('chain with rejections don\'t affect next answers', async () => {
+    when(myClassMock).method()
+        .rejects(new Error('Some error'))
+        .resolves(6)
+
+    await expect(myClassMock.method()).rejects.toThrow('Some error')
+    await expect(myClassMock.method()).resolves.toEqual(6)
+})
+
 beforeEach(() => {
     myClassMock = mockt(MyClass)
 })
