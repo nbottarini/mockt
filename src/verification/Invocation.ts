@@ -1,6 +1,10 @@
 import { Matcher } from '@/matchers/Matcher'
 
+let globalIndex = 0
+
 export class Invocation {
+    readonly globalIndex = globalIndex++
+
     constructor(readonly index: number, readonly name: string, readonly args: any[]) {
     }
 

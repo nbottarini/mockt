@@ -7,6 +7,7 @@ import { AtLeastVerifier } from '@/verification/simple/verifiers/AtLeastVerifier
 import { AtMostVerifier } from '@/verification/simple/verifiers/AtMostVerifier'
 import { MultipleInvocationsVerificator } from '@/verification/MultipleInvocationsVerificator'
 import { getInvocationTracker } from '@/lib/getInvocationTracker'
+import { SequenceVerificator } from '@/verification/SequenceVerificator'
 
 export function verify<T>(instance: T): SimpleInvocationVerificatorType<T> {
     return new SimpleInvocationVerificator(getInvocationTracker(instance), new AtLeastOnceVerifier()) as any as SimpleInvocationVerificatorType<T>
@@ -32,15 +33,15 @@ export function verifyAtMost<T>(times: number, instance: T): SimpleInvocationVer
     return new SimpleInvocationVerificator(getInvocationTracker(instance), new AtMostVerifier(times)) as any as SimpleInvocationVerificatorType<T>
 }
 
-export function verifyMulti<T>(instance: T): MultipleInvocationVerificatorType<T> {
-    return new MultipleInvocationsVerificator(getInvocationTracker(instance)) as any as MultipleInvocationVerificatorType<T>
-}
-
 export type SimpleInvocationVerificatorType<T> = {
     [K in keyof T]: T[K] extends (((...args: infer A) => any)|Function) ? (...args: A) => void : Function
 } & {
     getProperty(name: keyof T): void
     setProperty(name: keyof T, value: any): void
+}
+
+export function verifyMulti<T>(instance: T): MultipleInvocationVerificatorType<T> {
+    return new MultipleInvocationsVerificator(getInvocationTracker(instance)) as any as MultipleInvocationVerificatorType<T>
 }
 
 export type MultipleInvocationVerificatorType<T> = {
@@ -51,4 +52,19 @@ export type MultipleInvocationVerificatorType<T> = {
     called(): void
     calledInOrder(): void
     never(): void
+}
+
+export function verifySequence(): SequenceVerificatorType {
+    return new SequenceVerificator() as SequenceVerificatorType
+}
+
+export type SequenceVerificatorCallType<T> = {
+    [K in keyof T]: T[K] extends (((...args: infer A) => any)|Function) ? (...args: A) => SequenceVerificatorType : SequenceVerificatorType
+} & {
+    getProperty(name: keyof T): SequenceVerificatorType
+    setProperty(name: keyof T, value: any): SequenceVerificatorType
+}
+
+export type SequenceVerificatorType = {
+    call<T>(instance: T): SequenceVerificatorCallType<T>
 }
