@@ -57,11 +57,15 @@ export class MultipleInvocationsVerificator {
         this.failIfEmptyInvocationsToVerify()
         let lastIndex = -1
         for (let invocationToVerify of this.invocationsToVerify) {
-            const invocations = this.invocationTracker
-                .getMatchingInvocations(invocationToVerify.name, invocationToVerify.matchers)
-                .filter(it => it.index > lastIndex)
+            const methodString = `${invocationToVerify.name}(${invocationToVerify.matchers.map(m => m.toString()).join(', ')})`
+            let invocations = this.invocationTracker.getMatchingInvocations(invocationToVerify.name, invocationToVerify.matchers)
             if (invocations.length === 0) {
-                const methodString = `${invocationToVerify.name}(${invocationToVerify.matchers.map(m => m.toString()).join(', ')})`
+                const message = `Expected "${methodString}" to be called but was never called.\n`
+                throw new Error(message + this.getAllCallsMessage())
+            }
+
+            invocations = invocations.filter(it => it.index > lastIndex)
+            if (invocations.length === 0) {
                 const message = `Expected "${methodString}" to be called in the specified order.\n`
                 throw new Error(message + this.getAllCallsMessage())
             }

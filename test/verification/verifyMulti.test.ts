@@ -191,6 +191,20 @@ describe('verifyMulti calledInOrder', () => {
         }).toThrow('Must specify at least one method or property to verify')
     })
 
+    it('fails if some method was not called', () => {
+        myClassMock.methodThatReturnsParam(3)
+
+        expect(() => {
+            verifyMulti(myClassMock)
+                .methodThatReturns1()
+                .methodThatReturnsParam(3)
+                .calledInOrder()
+        }).toThrow(
+            `Expected "methodThatReturns1()" to be called but was never called.\n\n` +
+            `All calls:\n` +
+            `- methodThatReturnsParam(3)\n`        )
+    })
+
     it('fails if wrong order', () => {
         myClassMock.methodThatReturns1()
         myClassMock.methodThatReturnsParam(3)

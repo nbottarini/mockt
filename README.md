@@ -104,6 +104,7 @@ verify(calculator).sum(any(), 8)
     - [Verify multiple method calls](#verify-multiple-method-calls)
     - [Verify multiple methods never called](#verify-multiple-methods-never-called)
     - [Verify multiple methods called in expected order](#verify-multiple-methods-called-in-expected-order)
+    - [Verify sequence of calls from different mocks or spies](#verify-sequence-of-calls-from-different-mocks-or-spies)
   - [Capture arguments](#capture-arguments)
     - [Last call](#last-call)
     - [First call](#first-call)
@@ -712,6 +713,22 @@ verifyMulti(calculator)
     .sum(1, 4)
     .sum(1, 2)
     .calledInOrder() // fails
+```
+
+#### Verify sequence of calls from different mocks or spies
+
+```typescript
+import { verifySequence } from './verifySequence'
+
+const billingService = mockt<BillingService>()
+const deliveryService = mockt<DeliveryService>()
+
+billingService.createFor(customer, products)
+deliveryService.deliveryFor(customer.address, products)
+
+verifySequence()
+    .call(billingService).createFor(any(), any())
+    .call(deliveryService).deliveryFor(any(), any()) // passes
 ```
 
 ### Capture arguments
