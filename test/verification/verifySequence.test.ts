@@ -86,7 +86,7 @@ it('with properties', () => {
 
 it('with spies', () => {
     myInterface.otherMethodThatReturnsParam(3)
-    mySpy.methodThatReturnsParam(10)
+    myObject.methodThatReturnsParam(10)
 
     verifySequence()
         .call(myInterface).otherMethodThatReturnsParam(any())

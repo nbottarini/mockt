@@ -1,7 +1,7 @@
 import { any, eq, neq, spy, verify } from '../../src'
 
 it('method without params success if called', () => {
-    const value = mySpy.methodThatReturns1()
+    const value = myObject.methodThatReturns1()
 
     verify(mySpy).methodThatReturns1()
     expect(value).toEqual(1)
@@ -14,14 +14,14 @@ it('method without params fails if not called', () => {
 })
 
 it('method with params success if called with matching param', () => {
-    const value = mySpy.methodThatReturnsParam(3)
+    const value = myObject.methodThatReturnsParam(3)
 
     verify(mySpy).methodThatReturnsParam(neq(2))
     expect(value).toEqual(3)
 })
 
 it('method with params success if called with non-matching param', () => {
-    mySpy.methodThatReturnsParam(3)
+    myObject.methodThatReturnsParam(3)
 
     expect(() => verify(mySpy).methodThatReturnsParam(eq(2))).toThrow(
         `Expected "methodThatReturnsParam(eq(2))" to be called but has never been called.\n\n` +
@@ -32,7 +32,7 @@ it('method with params success if called with non-matching param', () => {
 
 it('property get success if read', () => {
     // @ts-ignore
-    const value = mySpy.someProperty
+    const value = myObject.someProperty
 
     verify(mySpy).getProperty('someProperty')
 })
@@ -44,10 +44,10 @@ it('property get fails if not read', () => {
 })
 
 it('property set success if assigned', () => {
-    mySpy.someProperty = 'some value'
+    myObject.someProperty = 'some value'
 
     verify(mySpy).setProperty('someProperty', 'some value')
-    expect(mySpy.someProperty).toEqual('some value')
+    expect(myObject.someProperty).toEqual('some value')
 })
 
 it('property set fails if not assigned', () => {
@@ -57,11 +57,13 @@ it('property set fails if not assigned', () => {
 })
 
 beforeEach(() => {
-    mySpy = spy({
+    myObject = {
         someProperty: 'Hello',
         methodThatReturns1: () => 1,
         methodThatReturnsParam: (param: number) => param,
-    })
+    }
+    mySpy = spy(myObject)
 })
 
+let myObject: any
 let mySpy: any
